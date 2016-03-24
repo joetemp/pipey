@@ -13,10 +13,12 @@ function getApps (callback) {
         var parse = JSON.parse(body);
         var data = parse.data;
         var apps = 2;
+        var myIds = [];
 
         for (var i in data) {
             if (data[i].stage_id === apps) {
                 callback(data[i].id);
+                console.log(data[i].id);
             }
         }
     });

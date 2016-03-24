@@ -16,10 +16,10 @@ getApps(function myFunctionName (id) {
         var data = parse.data;
         
         for (var i in data) {
-            if (data[i].deal_id === id) {
-                console.log(data[i].subject);
+            if (data[i].subject === '4506-T') {
+                // Find deals in stage 2 that DON'T already have a 4506-T task and console.log thier deal_id.
+                console.log(data[i].deal_id);
             } 
         }
-    
     })
 });
