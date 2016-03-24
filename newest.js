@@ -25,7 +25,6 @@ getDeals (url.deals, 'stage_id', 2, function (deals) {
         for (var i in deals) {
             if (deals[i].stage_id === 2) {
                 stageDeals.push(deals[i].id);
-                 console.log(stageDeals);
             }
         }
 
@@ -38,6 +37,8 @@ getDeals (url.deals, 'stage_id', 2, function (deals) {
                 }
             }
         }
+
+        console.log(stageDeals);
     
     });
 
