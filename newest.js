@@ -32,8 +32,11 @@ getDeals (url.deals, 'stage_id', 2, function (deals) {
             
             for (var i in activities) {
             
-                if (activities[i].subject === '4506-T' && stageDeals[j].id === activities[i].deal_id) {
+                if (activities[i].subject === '4506-T' && stageDeals[j] === activities[i].deal_id) {
                     // Delete the deal from the array.
+                    stageDeals.splice(j, 1);
+
+                    console.log('we got one');
                 }
             }
         }
