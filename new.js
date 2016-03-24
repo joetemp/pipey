@@ -37,6 +37,8 @@ getDeals (2, function getActivities (stageDeals) {
     // For each deal in the stageDeals array...
     for (var i in stageDeals) {
         // This is the url that is used for api calls concerning activities associated with a certain deal.
+        
+        console.log(url.deals + '/' + stageDeals[i] + '/' + url.activities + url.startBlurb + apiToken);
         request(url.deals + '/' + stageDeals[i] + '/' + url.activities + url.startBlurb + apiToken, function (error, response, body) {
             var parse = JSON.parse(body);
             var data = parse.data;
@@ -45,6 +47,9 @@ getDeals (2, function getActivities (stageDeals) {
                 return console.log('error');
             }
 
+            console.log(data);
+            
+            /*
             // Loop through all the activities associated with this deal.
             for (var i in data) {
                 // Console log the subjects of all the activies.
@@ -56,7 +61,7 @@ getDeals (2, function getActivities (stageDeals) {
                     // Correct answer here is 21. But the console reads 23... wut?
                     console.log (stageDeals[i]);
                 }
-            }
+            }*/
         }); 
     }
 });
