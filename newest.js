@@ -3,7 +3,7 @@ const request = require('request');
 var url = {deals: 'https://api.pipedrive.com/v1/deals?start=0&api_token=07c87355d3f195c4b1bbfa6419456b620b575d05', 
            activities: 'https://api.pipedrive.com/v1/activities?start=0&api_token=07c87355d3f195c4b1bbfa6419456b620b575d05'};
 
-function getDeals (url, key, value, callback) {
+function getDeals (url, callback) {
     
     request(url, function (error, response, body) {
         if (error) {
@@ -16,9 +16,9 @@ function getDeals (url, key, value, callback) {
     });
 }
 
-getDeals (url.deals, 'stage_id', 2, function (deals) {
+getDeals (url.deals, function (deals) {
 
-    getDeals (url.activities, 'subject', '4506-T', function (activities) {
+    getDeals (url.activities, function (activities) {
 
         var stageDeals = [];
 
