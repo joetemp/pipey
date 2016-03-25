@@ -35,14 +35,10 @@ getDeals (url.deals, 'stage_id', 2, function (deals) {
                 if (activities[i].subject === '4506-T' && stageDeals[j] === activities[i].deal_id) {
                     // Delete the deal from the array.
                     stageDeals.splice(j, 1);
-
-                    console.log('we got one');
                 }
             }
         }
 
         console.log(stageDeals);
-    
     });
-
 }); 

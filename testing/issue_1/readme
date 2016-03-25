@@ -1,0 +1,2 @@
+This is an investigation into what is causing bug report #1. Basically, if there are any past due tasks with the same name as the one
+the program is looking for... all hell breaks lose.
