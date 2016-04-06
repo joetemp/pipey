@@ -22,9 +22,11 @@ getDeals (url.deals, function (deals) {
 
         var stageDeals = [];
 
+        /*
         if (Array.isArray(activities)) { 
             activities = activities[0]; 
         }
+        */
 
         for (var i in deals) {
             if (deals[i].stage_id === 2) {
@@ -43,6 +45,7 @@ getDeals (url.deals, function (deals) {
             }
         }
 
+        // These are all the deals that are in stage 2 that NEED a 4506-T activity.
         console.log(stageDeals);
     });
 }); 
