@@ -22,6 +22,10 @@ getDeals (url.deals, function (deals) {
 
         var stageDeals = [];
 
+        if (Array.isArray(activities)) { 
+            activities = activities[0]; 
+        }
+
         for (var i in deals) {
             if (deals[i].stage_id === 2) {
                 stageDeals.push(deals[i].id);
