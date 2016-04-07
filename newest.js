@@ -40,6 +40,14 @@ getDeals (url.deals, function (deals) {
         }
 
         // These are all the deals that are in stage 2 that NEED a 4506-T activity.
-        console.log(stageDeals);
+        // console.log(stageDeals);
+
+        addActivities(stageDeals);
     });
 }); 
+
+function addActivities(deals) {
+    console.log(deals);
+};
+
+
