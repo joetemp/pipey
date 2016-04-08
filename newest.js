@@ -40,9 +40,6 @@ getDeals (url.deals, function (deals) {
             }
         }
 
-        // These are all the deals that are in the applications stage that NEED a 'Foo' activity.
-        // console.log(stageDeals);
-
         addActivities(applications);
     });
 }); 
@@ -55,6 +52,8 @@ function addActivities(applications) {
                     'deal_id': applications[i]}});
     }
 
+    /* These are all the deals in the 'applications' array. If they are in this array, they should be in stage 2 and NOT already have a
+    'Foo' activity. Once this program is run... there should be NO items in this array. */
     console.log(applications);
 
 };
