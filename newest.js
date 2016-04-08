@@ -1,7 +1,7 @@
 const request = require('request');
 
-var url = {deals: 'https://api.pipedrive.com/v1/deals?start=0&api_token=e91945ca2b414d0a57cb2ea9d72308d2e4b518ed', 
-           activities: 'https://api.pipedrive.com/v1/activities?start=0&api_token=e91945ca2b414d0a57cb2ea9d72308d2e4b518ed'};
+var url = {deals: 'https://api.pipedrive.com/v1/deals?start=0&api_token=54b576555b97fad8eb347448ef8fc278cce0cef6', 
+           activities: 'https://api.pipedrive.com/v1/activities?start=0&api_token=54b576555b97fad8eb347448ef8fc278cce0cef6'};
 
 function getDeals (url, callback) {
     
