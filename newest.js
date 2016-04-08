@@ -20,52 +20,43 @@ getDeals (url.deals, function (deals) {
 
     getDeals (url.activities, function (activities) {
 
-        var stageDeals = [];
+        var applications = [];
 
         for (var i in deals) {
+            // If the stage_id is 2, put the deal in the applications array.
             if (deals[i].stage_id === 2) {
-                stageDeals.push(deals[i].id);
+                applications.push(deals[i].id);
             }
         }
 
-        for (var j in stageDeals) {
+        for (var j in applications) {
             
             for (var i in activities) {
             
-                if (activities[i].subject === '4506-T' && stageDeals[j] === activities[i].deal_id) {
-                    // Delete the deal from the array.
-                    stageDeals.splice(j, 1);
+                if (activities[i].subject === 'Foo' && applications[j] === activities[i].deal_id) {
+                    // Delete the deal from the applications array IF it already has a 'Foo' activity.
+                    applications.splice(j, 1);
                 }
             }
         }
 
-        // These are all the deals that are in stage 2 that NEED a 4506-T activity.
+        // These are all the deals that are in the applications stage that NEED a 'Foo' activity.
         // console.log(stageDeals);
 
-        addActivities(stageDeals);
+        addActivities(applications);
     });
 }); 
 
-function addActivities(stageDeals) {
+function addActivities(applications) {
 
-    for (var i in stageDeals) {
-        console.log(stageDeals[i]);
-        
+    for (var i in applications) {
         request.post('https://api.pipedrive.com/v1/activities?api_token=e91945ca2b414d0a57cb2ea9d72308d2e4b518ed', {
-            form: {'subject': '4506-T',
-                    'deal_id': stageDeals[i]}});
-
+            form: {'subject': 'Foo',
+                    'deal_id': applications[i]}});
     }
-    
-    
-    /*
-    console.log(stageDeals);
 
-    console.log(Date());
+    console.log(applications);
 
-    request.post('https://api.pipedrive.com/v1/activities?api_token=e91945ca2b414d0a57cb2ea9d72308d2e4b518ed', {
-        form: {'subject': 'fuck off'}});
-    */
 };
 
 
