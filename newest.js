@@ -1,7 +1,7 @@
 const request = require('request');
 
-var url = {deals: 'https://api.pipedrive.com/v1/deals?start=0&api_token=54b576555b97fad8eb347448ef8fc278cce0cef6', 
-           activities: 'https://api.pipedrive.com/v1/activities?start=0&api_token=54b576555b97fad8eb347448ef8fc278cce0cef6'};
+var url = {deals: 'https://api.pipedrive.com/v1/deals?start=0&api_token=a74cbe24c7ac34f45256356a747eaebf96445c94', 
+           activities: 'https://api.pipedrive.com/v1/activities?start=0&api_token=a74cbe24c7ac34f45256356a747eaebf96445c94'};
 
 function getDeals (url, callback) {
     
@@ -35,10 +35,9 @@ getDeals (url.deals, function (deals) {
             
             for (var i in activities) {
             
-                /*This doesn't check if the current activity's deal_id is inside the applications array. It only checks to see if it's the same
-                as the current application in the parent loop :p */
-               // if (activities[i].subject === 'Foo' && applications[j] === activities[i].deal_id) {
-               if (activities[i].subject === 'Foo') {
+                /*This should check to see if a task already has an activity call "Foo". If it does, it will also check to see if the
+                 * deal_id matches applications[i]. If both are true, it should delete that deal from the applications array.*/
+               if (activities[i].subject === 'Foo' && applications[j] === activities[i].deal_id) {
                     // Delete the deal from the applications array IF it already has a 'Foo' activity.
                     applications.splice(j, 1);
                 }
@@ -52,7 +51,7 @@ getDeals (url.deals, function (deals) {
 function addActivities(applications) {
 
     for (var i in applications) {
-        request.post('https://api.pipedrive.com/v1/activities?api_token=54b576555b97fad8eb347448ef8fc278cce0cef6', {
+        request.post('https://api.pipedrive.com/v1/activities?api_token=a74cbe24c7ac34f45256356a747eaebf96445c94', {
             form: {'subject': 'Foo',
                     'deal_id': applications[i]}});
     }
