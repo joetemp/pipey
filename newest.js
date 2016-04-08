@@ -1,7 +1,7 @@
 const request = require('request');
 
-var url = {deals: 'https://api.pipedrive.com/v1/deals?start=0&api_token=07c87355d3f195c4b1bbfa6419456b620b575d05', 
-           activities: 'https://api.pipedrive.com/v1/activities?start=0&api_token=07c87355d3f195c4b1bbfa6419456b620b575d05'};
+var url = {deals: 'https://api.pipedrive.com/v1/deals?start=0&api_token=e91945ca2b414d0a57cb2ea9d72308d2e4b518ed', 
+           activities: 'https://api.pipedrive.com/v1/activities?start=0&api_token=e91945ca2b414d0a57cb2ea9d72308d2e4b518ed'};
 
 function getDeals (url, callback) {
     
@@ -46,8 +46,26 @@ getDeals (url.deals, function (deals) {
     });
 }); 
 
-function addActivities(deals) {
-    console.log(deals);
+function addActivities(stageDeals) {
+
+    for (var i in stageDeals) {
+        console.log(stageDeals[i]);
+        
+        request.post('https://api.pipedrive.com/v1/activities?api_token=e91945ca2b414d0a57cb2ea9d72308d2e4b518ed', {
+            form: {'subject': '4506-T',
+                    'deal_id': stageDeals[i]}});
+
+    }
+    
+    
+    /*
+    console.log(stageDeals);
+
+    console.log(Date());
+
+    request.post('https://api.pipedrive.com/v1/activities?api_token=e91945ca2b414d0a57cb2ea9d72308d2e4b518ed', {
+        form: {'subject': 'fuck off'}});
+    */
 };
 
 
