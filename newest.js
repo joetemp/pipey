@@ -29,11 +29,16 @@ getDeals (url.deals, function (deals) {
             }
         }
 
+        // This section is what's causing issues:
+
         for (var j in applications) {
             
             for (var i in activities) {
             
-                if (activities[i].subject === 'Foo' && applications[j] === activities[i].deal_id) {
+                /*This doesn't check if the current activity's deal_id is inside the applications array. It only checks to see if it's the same
+                as the current application in the parent loop :p */
+               // if (activities[i].subject === 'Foo' && applications[j] === activities[i].deal_id) {
+               if (activities[i].subject === 'Foo') {
                     // Delete the deal from the applications array IF it already has a 'Foo' activity.
                     applications.splice(j, 1);
                 }
