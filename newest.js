@@ -47,7 +47,7 @@ getDeals (url.deals, function (deals) {
 function addActivities(applications) {
 
     for (var i in applications) {
-        request.post('https://api.pipedrive.com/v1/activities?api_token=e91945ca2b414d0a57cb2ea9d72308d2e4b518ed', {
+        request.post('https://api.pipedrive.com/v1/activities?api_token=54b576555b97fad8eb347448ef8fc278cce0cef6', {
             form: {'subject': 'Foo',
                     'deal_id': applications[i]}});
     }
