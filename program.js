@@ -32,20 +32,16 @@ function has4506T (activity) {
 getIt (urls.deals, function (deals) {
     deals.forEach(inStageTwo);
     console.log (applications);
-
+});
     
-    getIt (urls.activities, function (activities) {
+getIt (urls.activities, function (activities) {
+
+    if (activities == null) {
+        console.log("There are no activities!");
+    }
+
+    else{
         activities.forEach(has4506T);
         console.log(alreadyHave4506T);
-    });
-
+    }
 });
-
-
-/*
- *
-getIt (urls.activities, function (activities) {
-    activities.forEach(has4506T);
-    console.log(alreadyHave4506T);
-});
-*/
