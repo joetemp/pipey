@@ -5,6 +5,7 @@ var urls = { deals: 'https://api.pipedrive.com/v1/deals?start=0&api_token=800b3b
 
 var applications = [];
 var alreadyHave4506T = [];
+var stillNeeds4506T = [];
 
 function getIt (url, callback) {
     request(url, function (error, response, body) {
@@ -28,12 +29,46 @@ function has4506T (activity) {
     }
 }
 
+function needs4506T (test) {
+    if (alreadyHave4506T.indexOf(i) === -1) {
+       stillNeeds4506T.push(i);
+    }
+}
+
+var p1 = new Promise(function(resolve, reject) {
+    
+    getIt (urls.deals, function (deals) {
+        deals.forEach(inStageTwo);
+        resolve (applications);
+    });
+
+    //resolve (applications);
+
+});
+
+p1.then(function(value) {
+    console.log(value);
+    
+    getIt (urls.activities, function (activities) {
+        activities.forEach(has4506T);
+        console.log(alreadyHave4506T);
+    });
+
+}).then(function(value){
+    applications.forEach(needs4506T);
+    console.log(stillNeeds4506T);
+});
+
+/*
+ *
 getIt (urls.deals, function (deals) {
     deals.forEach(inStageTwo);
     console.log (applications);
 });
 
+
 getIt (urls.activities, function (activities) {
     activities.forEach(has4506T);
     console.log(alreadyHave4506T);
 });
+*/
