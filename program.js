@@ -29,44 +29,21 @@ function has4506T (activity) {
     }
 }
 
-function needs4506T (test) {
-    if (alreadyHave4506T.indexOf(i) === -1) {
-       stillNeeds4506T.push(i);
-    }
-}
+getIt (urls.deals, function (deals) {
+    deals.forEach(inStageTwo);
+    console.log (applications);
 
-var p1 = new Promise(function(resolve, reject) {
-    
-    getIt (urls.deals, function (deals) {
-        deals.forEach(inStageTwo);
-        resolve (applications);
-    });
-
-    //resolve (applications);
-
-});
-
-p1.then(function(value) {
-    console.log(value);
     
     getIt (urls.activities, function (activities) {
         activities.forEach(has4506T);
         console.log(alreadyHave4506T);
     });
 
-}).then(function(value){
-    applications.forEach(needs4506T);
-    console.log(stillNeeds4506T);
 });
+
 
 /*
  *
-getIt (urls.deals, function (deals) {
-    deals.forEach(inStageTwo);
-    console.log (applications);
-});
-
-
 getIt (urls.activities, function (activities) {
     activities.forEach(has4506T);
     console.log(alreadyHave4506T);
