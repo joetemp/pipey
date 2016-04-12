@@ -37,15 +37,15 @@ getIt (urls.deals, function (deals) {
         activities.forEach(has4506T);
         console.log(alreadyHave4506T);
 
-        applications.forEach((i) => { if (alreadyHave4506T.indexOf(i) === -1) { stillNeeds4506T.push(i) }}) 
+        applications.forEach(function(i) { if (alreadyHave4506T.indexOf(i) === -1) { stillNeeds4506T.push(i) }}) 
 
         console.log(stillNeeds4506T);
 
-        stillNeeds4506T.forEach((i => {
+        stillNeeds4506T.forEach(function(i) {
             request.post('https://api.pipedrive.com/v1/activities?api_token=800b3b1ce3b3d06db9d7031758f332b480d45a27', {                            
                 form: {'subject': '4506-T',
                        'deal_id': i}});
-        }));
+        });
             
     }); 
 
