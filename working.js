@@ -19,6 +19,10 @@ function inStageTwo (deal) {
     }   
 }
 
+function testish(i) {
+    console.log(i.person_id.name + ' ' + i.add_time);
+}
+
 function has4506T (activity) {
     if (activity.subject === '4506-T') {
         alreadyHave4506T.push(activity.deal_id);  
@@ -44,6 +48,8 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     deals.forEach(inStageTwo);
 
     console.log(applications);
+
+    deals.forEach(testish);
 
     activities.forEach(has4506T);
 
