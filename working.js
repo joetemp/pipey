@@ -25,6 +25,18 @@ function has4506T (activity) {
     }   
 }
 
+function compare (i) {
+    if (alreadyHave4506T.indexOf(i) === -1) {
+        stillNeeds4506T.push(i)
+    }
+}
+
+function add (i) {
+    rp.post('https://api.pipedrive.com/v1/activities?api_token=800b3b1ce3b3d06db9d7031758f332b480d45a27', {    
+        form: {'subject': '4506-T',
+        'deal_id': i}});
+}
+
 Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) {
     var deals = results[0];
     var activities = results[1];
@@ -35,13 +47,19 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     activities.forEach(has4506T);
     console.log(alreadyHave4506T);
 }).then(function(){
-    applications.forEach(function(i) { if (alreadyHave4506T.indexOf(i) === -1) { stillNeeds4506T.push(i) }}) 
+    //applications.forEach(function(i) { if (alreadyHave4506T.indexOf(i) === -1) { stillNeeds4506T.push(i) }}) 
+    applications.forEach(compare);
 
     console.log(stillNeeds4506T);
 
+    stillNeeds4506T.forEach(add);
+
+    /*
+     *
     stillNeeds4506T.forEach(function(i) {
         rp.post('https://api.pipedrive.com/v1/activities?api_token=800b3b1ce3b3d06db9d7031758f332b480d45a27', {                            
             form: {'subject': '4506-T',
                    'deal_id': i}});
     });
+    */
 });
