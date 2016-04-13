@@ -1,4 +1,6 @@
 const request = require('request-promise');
+const moment = require('moment');
+moment().format();
 
 var urls = { deals: 'https://api.pipedrive.com/v1/deals?start=0&api_token=800b3b1ce3b3d06db9d7031758f332b480d45a27',
              activities : 'https://api.pipedrive.com/v1/activities?start=0&api_token=800b3b1ce3b3d06db9d7031758f332b480d45a27' };
@@ -19,8 +21,12 @@ function inStageTwo (deal) {
     }   
 }
 
-function testish(i) {
-    console.log(i.person_id.name + ' ' + i.add_time);
+function dueDate(i) {
+    var addDate = moment(i.add_time).format('YYYY-MM-DD');
+    var dueDate = moment(addDate).add(3, 'days').format('YYYY-MM-DD');
+    
+    console.log(i.person_id.name + ' (Deal #' + i.id + ')' + ' was added on ' + addDate);
+    console.log(dueDate);
 }
 
 function has4506T (activity) {
@@ -49,7 +55,7 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
 
     console.log(applications);
 
-    deals.forEach(testish);
+    deals.forEach(dueDate);
 
     activities.forEach(has4506T);
 
