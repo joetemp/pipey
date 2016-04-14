@@ -21,16 +21,6 @@ function inStageTwo (deal) {
     }   
 }
 
-/*
-function dueDate(i) {
-    var addDate = moment(i.add_time).format('YYYY-MM-DD');
-    var dueDate = moment(addDate).add(3, 'days').format('YYYY-MM-DD');
-    
-    console.log(i.person_id.name + ' (Deal #' + i.id + ')' + ' was added on ' + addDate);
-    console.log(dueDate);
-}
-*/
-
 function has4506T (activity) {
     if (activity.subject === '4506-T') {
         alreadyHave4506T.push(activity.deal_id);  
@@ -46,8 +36,7 @@ function compare (i) {
 function add (i) {
     request.post('https://api.pipedrive.com/v1/activities?api_token=800b3b1ce3b3d06db9d7031758f332b480d45a27', {    
         form: {'subject': '4506-T',
-               'deal_id': i,
-              'due_time': moment(i.stage_change_time).add(3, 'days').format('YYYY-MM-DD')}});
+               'deal_id': i}});
 }
 
 Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) {
@@ -57,8 +46,6 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     deals.forEach(inStageTwo);
 
     console.log(applications);
-
-    //deals.forEach(dueDate);
 
     activities.forEach(has4506T);
 
