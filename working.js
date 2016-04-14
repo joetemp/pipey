@@ -47,7 +47,7 @@ function add (i) {
     request.post('https://api.pipedrive.com/v1/activities?api_token=800b3b1ce3b3d06db9d7031758f332b480d45a27', {    
         form: {'subject': '4506-T',
                'deal_id': i,
-              'due_time': moment(i.add_time).add(3, 'days').format('YYYY-MM-DD')}});
+              'due_time': moment(i.stage_change_time).add(3, 'days').format('YYYY-MM-DD')}});
 }
 
 Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) {
