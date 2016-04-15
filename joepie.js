@@ -2,8 +2,10 @@ const request = require('request-promise');
 const moment = require('moment');
 moment().format();
 
-var urls = { deals: 'https://api.pipedrive.com/v1/deals?start=0&api_token=bef43f201c79aa429455af68983030311c6e753a',
-             activities : 'https://api.pipedrive.com/v1/activities?start=0&api_token=bef43f201c79aa429455af68983030311c6e753a' };
+var API_KEY = process.env.API_KEY;
+
+var urls = { deals: 'https://api.pipedrive.com/v1/deals?start=0&api_token=' + API_KEY,
+             activities : 'https://api.pipedrive.com/v1/activities?start=0&api_token=' + API_KEY };
 
 function getIt (url) {
     return request(url).then(function (body) {
@@ -13,7 +15,7 @@ function getIt (url) {
 
 // I need to set a proper due date in here.
 function add (i) {
-    return request.post('https://api.pipedrive.com/v1/activities?api_token=bef43f201c79aa429455af68983030311c6e753a', {    
+    return request.post('https://api.pipedrive.com/v1/activities?api_token=' +  API_KEY, {    
         form: {'subject': '4506-T',
                'deal_id': i}});
 }
@@ -27,7 +29,6 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     });
     
     var alreadyHave4506T = activities.filter(function(activity) {
-        console.log(applications);
         return (activity.subject === '4506-T');
     });
     
