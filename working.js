@@ -2,8 +2,8 @@ const request = require('request-promise');
 const moment = require('moment');
 moment().format();
 
-var urls = { deals: 'https://api.pipedrive.com/v1/deals?start=0&api_token=800b3b1ce3b3d06db9d7031758f332b480d45a27',
-             activities : 'https://api.pipedrive.com/v1/activities?start=0&api_token=800b3b1ce3b3d06db9d7031758f332b480d45a27' };
+var urls = { deals: 'https://api.pipedrive.com/v1/deals?start=0&api_token=bef43f201c79aa429455af68983030311c6e753a',
+             activities : 'https://api.pipedrive.com/v1/activities?start=0&api_token=bef43f201c79aa429455af68983030311c6e753a' };
 
 var applications = []; 
 var alreadyHave4506T = []; 
@@ -35,7 +35,7 @@ function compare (id) {
 
 // I need to set a proper due date in here.
 function add (i) {
-    request.post('https://api.pipedrive.com/v1/activities?api_token=800b3b1ce3b3d06db9d7031758f332b480d45a27', {    
+    request.post('https://api.pipedrive.com/v1/activities?api_token=bef43f201c79aa429455af68983030311c6e753a', {    
         form: {'subject': '4506-T',
                'deal_id': i}});
 }
