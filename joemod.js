@@ -36,7 +36,7 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
 
     applications.forEach(appFunction);
 
-    console.log(array);
+    console.log(testArray);
     
     // This creates a var called 'alreadyHave4506T' and fills it with activity objects that have a subject of '4506-T'.
     var alreadyHave4506T = activities.filter(function(activity) {
