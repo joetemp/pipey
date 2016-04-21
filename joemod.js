@@ -28,6 +28,8 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     var applications = deals.filter(function(deal) {
         return (deal.stage_id === 2);
     });
+
+    console.log(applications);
     
     // This creates a var called 'alreadyHave4506T' and fills it with activity objects that have a subject of '4506-T'.
     var alreadyHave4506T = activities.filter(function(activity) {
