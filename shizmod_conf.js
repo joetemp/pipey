@@ -24,6 +24,7 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     var activities = results[1];
 
     var applications = {};
+    var alreadyHave4506T = {};
     var stillNeeds4506T = [];
 
     for (var i in deals) {
@@ -31,28 +32,32 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
             applications[deals[i].id] = deals[i];
         }
     }
-
-    // console.log(applications);
     
-    var alreadyHave4506T = activities.filter(function(activity) {
-        return (activity.subject === '4506-T');
-    });
+    for (var i in activities) {
+        if (activities[i].subject === '4506-T') {
+            alreadyHave4506T[activities[i].deal_id] = activities[i];
+        }
+    }
 
-    // console.log(alreadyHave4506T);
+    console.log(Object.keys(applications));
+    console.log(Object.keys(alreadyHave4506T));
+
+    console.log(applications[1].person_id.name);
 
     for (var i in applications) {
-        var id = applications.i;
-        if (alreadyHave4506T.indexOf(id) === -1) {
-            stillNeeds4506T.push(id);	
+        console.log(i + ': ' + alreadyHave4506T.hasOwnProperty(i));
+        if (!alreadyHave4506T.hasOwnProperty(i)) {
+            stillNeeds4506T.push(i);
         }
     }
 
     console.log(stillNeeds4506T);
     
     return Promise.all(stillNeeds4506T.map(function(item) {
-        return add(item.id);
+        return add(item);
     }));
 
 }).then(function(responses) {
     // all have now been added
 });
+
