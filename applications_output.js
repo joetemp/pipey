@@ -475,6 +475,5 @@
     owner_name: 'Joe BO$$',
     cc_email: 'business2+deal9@pipedrivemail.com',
     org_hidden: false,
-    person_hidden: false } 
-]
+    person_hidden: false }]
 
