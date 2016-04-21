@@ -29,12 +29,14 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
         return (deal.stage_id === 2);
     });
 
-    console.log(applications);
+    // console.log(applications);
     
     // This creates a var called 'alreadyHave4506T' and fills it with activity objects that have a subject of '4506-T'.
     var alreadyHave4506T = activities.filter(function(activity) {
         return (activity.subject === '4506-T');
     });
+
+    console.log(alreadyHave4506T);
     
     var stillNeeds4506T = applications.filter(function(application) {
         return (alreadyHave4506T.indexOf(application) === -1);
