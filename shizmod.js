@@ -38,7 +38,7 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
         return (activity.subject === '4506-T');
     });
 
-    console.log(alreadyHave4506T);
+    // console.log(alreadyHave4506T);
 
     for (var i in applications) {
         var id = applications[i];
