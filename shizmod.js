@@ -28,7 +28,6 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
 
     for (var i in deals) {
         if (deals[i].stage_id === 2) {
-            // allocate each 'deal' object with it's own deal_id
             applications[deals[i].id] = deals[i];
         }
     }
