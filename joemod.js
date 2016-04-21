@@ -20,30 +20,23 @@ function add (i) {
                'deal_id': i}});
 }
 
-function appFunction (app) {
-    testArray.push(app.id);
-}
-
 Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) {
     var deals = results[0];
     var activities = results[1];
-    var testArray = [];
     
     // This creates a var called 'applications' and fills it with deal objects that have a stage_id of '2'. 
     var applications = deals.filter(function(deal) {
         return (deal.stage_id === 2);
     });
 
-    applications.forEach(appFunction);
-
-    console.log(testArray);
+    // console.log(applications);
     
     // This creates a var called 'alreadyHave4506T' and fills it with activity objects that have a subject of '4506-T'.
     var alreadyHave4506T = activities.filter(function(activity) {
         return (activity.subject === '4506-T');
     });
 
-    // console.log(alreadyHave4506T);
+    console.log(alreadyHave4506T);
     
     var stillNeeds4506T = applications.filter(function(application) {
         return (alreadyHave4506T.indexOf(application) === -1);
