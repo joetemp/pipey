@@ -32,7 +32,7 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
         }
     }
 
-    console.log(applications);
+    // console.log(applications);
     
     var alreadyHave4506T = activities.filter(function(activity) {
         return (activity.subject === '4506-T');
