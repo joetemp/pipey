@@ -38,10 +38,11 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
         return (activity.subject === '4506-T');
     });
 
-    for (var i in alreadyHave4506T) {
-        var id = alreadyHave4506T[i].deal_id;
-        console.log(id);
-        if (!applications.hasOwnProperty(id)) {
+    console.log(alreadyHave4506T);
+
+    for (var i in applications) {
+        var id = applications[i];
+        if (alreadyHave4506T.indexOf(id) === -1) {
             stillNeeds4506T.push(id);	
         }
     }
