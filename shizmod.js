@@ -40,8 +40,9 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
 
     for (var i in alreadyHave4506T) {
         var id = alreadyHave4506T[i].deal_id;
+        console.log(id);
         if (!applications.hasOwnProperty(id)) {
-            stillNeeds4506T.push(alreadyHave4506T[i].deal_id);	
+            stillNeeds4506T.push(id);	
         }
     }
 
