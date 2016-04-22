@@ -44,11 +44,11 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     console.log(Object.keys(apps));
     console.log(Object.keys(haves));
 
-    var haveNots = Object.keys(apps).filter(function(app) {
+    var diffs = Object.keys(apps).filter(function(app) {
         return (Object.keys(haves).indexOf(app) === -1); 
     });
 
-    haveNots = haveNots.map(function(item){
+    haveNots = diffs.map(function(item){
         return Number(item); 
     });
 
