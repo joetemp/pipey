@@ -82,8 +82,12 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
             request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
                 form: {'subject': '4506-T',
                        'deal_id': deal,
-                         'note' : apps[deal].person_id.name + ' is a pretty cool dude.'}});
+                         'note' : apps[deal].person_id.name + ' is a pretty cool dude.',
+                     'due_date' : moment(apps[deal].add_time).add(3, 'days').format('YYYY-MM-DD')}});
+
+            console.log(apps[deal].person_id.name + ' was created on ' + moment(apps[deal].add_time).format('YYYY-MM-DD') + '. So, this task is due on ' + moment(apps[deal].add_time).add(3, 'days').format('YYYY-MM-DD') + '.');
         });
+
     };
 
 }).then(function(){
