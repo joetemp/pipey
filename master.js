@@ -24,7 +24,6 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
 
     var apps = {};
     var haves = {};
-    // var haveNots = [];
     
     deals.forEach(function(deal){
         if (deal.stage_id === 2) {
@@ -37,9 +36,6 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
             haves[activity.deal_id] = activity; 
         }
     });
-
-    // console.log(apps);
-    // console.log(haves);
     
     console.log(Object.keys(apps));
     console.log(Object.keys(haves));
@@ -53,11 +49,4 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     });
 
     console.log(haveNots);
-
-    /*
-     *
-    Object.keys(apps).forEach(function(key){
-        console.log('fuck');
-    });
-    */
 });
