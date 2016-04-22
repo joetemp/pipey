@@ -17,15 +17,47 @@ function add (i) {
                    'deal_id': i}});
 }
 
-function test() {
-    console.log('this is a test');
-}
-
 Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) {
 
     var deals = results[0];
     var activities = results[1];
 
-    deals.forEach(test);
+    var apps = {};
+    var haves = {};
+    // var haveNots = [];
+    
+    deals.forEach(function(deal){
+        if (deal.stage_id === 2) {
+            apps[deal.id] = deal;
+        } 
+    });
 
+    activities.forEach(function(activity){
+        if (activity.subject === '4506-T') {
+            haves[activity.deal_id] = activity; 
+        }
+    });
+
+    // console.log(apps);
+    // console.log(haves);
+    
+    console.log(Object.keys(apps));
+    console.log(Object.keys(haves));
+
+    var haveNots = Object.keys(apps).filter(function(app) {
+        return (Object.keys(haves).indexOf(app) === -1); 
+    });
+
+    haveNots = haveNots.map(function(item){
+        return Number(item); 
+    });
+
+    console.log(haveNots);
+
+    /*
+     *
+    Object.keys(apps).forEach(function(key){
+        console.log('fuck');
+    });
+    */
 });
