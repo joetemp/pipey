@@ -49,4 +49,11 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     });
 
     console.log(haveNots);
+
+    return Promise.all(haveNots.map(function(haveNot) {
+        return add(haveNot); 
+    }));
+
+}).then(function(){
+    // do more stuff here.
 });
