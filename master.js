@@ -16,46 +16,69 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     var deals = results[0];
     var activities = results[1];
 
-    var apps = {};
-    var haves = {};
-
     if (Array.isArray(activities)) {
-        console.log("Yes... activities is an array. Woo hoo."); 
+        console.log("Activities is an array... so we'll loop through it."); 
+
+        var apps = {};
+        var haves = {};
+
+        deals.forEach(function(deal){
+            if (deal.stage_id === 2) {
+                apps[deal.id] = deal;
+            } 
+        });
+
+        activities.forEach(function(activity){
+            if (activity.subject === '4506-T') {
+                haves[activity.deal_id] = activity; 
+            }
+        });
+        
+        console.log(Object.keys(apps));
+        console.log(Object.keys(haves));
+
+        var diffs = Object.keys(apps).filter(function(app) {
+            return (Object.keys(haves).indexOf(app) === -1); 
+        });
+
+        var haveNots = diffs.map(function(item){
+            return Number(item); 
+        });
+
+        console.log(haveNots);
+
+        haveNots.forEach(function(deal){
+            request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
+                form: {'subject': '4506-T',
+                       'deal_id': deal,
+                         'note' : apps[deal].person_id.name + ' is a pretty cool dude.'}});
+        });
     } else {
-        console.log("Nope... there are no activities."); 
+        console.log("There are no activities... so we can't loop through them. Instead... we'll just add a 4506-T activity to every app."); 
+        
+        var apps = {};
+         
+        deals.forEach(function(deal){
+            if (deal.stage_id === 2) {
+                apps[deal.id] = deal;
+            } 
+        });
+
+        console.log(Object.keys(apps));
+
+        var haveNots = apps.map(function(item){
+            return Number(item); 
+        });
+
+        console.log(haveNots);
+
+        haveNots.forEach(function(deal){
+            request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
+                form: {'subject': '4506-T',
+                       'deal_id': deal,
+                         'note' : apps[deal].person_id.name + ' is a pretty cool dude.'}});
+        });
     };
-    
-    deals.forEach(function(deal){
-        if (deal.stage_id === 2) {
-            apps[deal.id] = deal;
-        } 
-    });
-
-    activities.forEach(function(activity){
-        if (activity.subject === '4506-T') {
-            haves[activity.deal_id] = activity; 
-        }
-    });
-    
-    console.log(Object.keys(apps));
-    console.log(Object.keys(haves));
-
-    var diffs = Object.keys(apps).filter(function(app) {
-        return (Object.keys(haves).indexOf(app) === -1); 
-    });
-
-    haveNots = diffs.map(function(item){
-        return Number(item); 
-    });
-
-    console.log(haveNots);
-
-    haveNots.forEach(function(deal){
-        request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
-            form: {'subject': '4506-T',
-                   'deal_id': deal,
-                     'note' : apps[deal].person_id.name + ' is a pretty cool dude.'}});
-    });
 
 }).then(function(){
     // do more stuff here.
