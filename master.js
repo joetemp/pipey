@@ -11,12 +11,6 @@ function getIt (url) {
     });
 } 
 
-function add (i) {
-    return request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
-            form: {'subject': '4506-T',
-                   'deal_id': i}});
-}
-
 Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) {
 
     var deals = results[0];
@@ -50,9 +44,12 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
 
     console.log(haveNots);
 
-    return Promise.all(haveNots.map(function(haveNot) {
-        return add(haveNot); 
-    }));
+    haveNots.forEach(function(deal){
+        request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
+            form: {'subject': '4506-T',
+                   'deal_id': deal,
+                     'note' : apps[deal].person_id.name + ' is a pretty cool dude.'}});
+    });
 
 }).then(function(){
     // do more stuff here.
