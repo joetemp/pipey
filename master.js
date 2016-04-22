@@ -66,7 +66,7 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
 
         console.log(Object.keys(apps));
 
-        var haveNots = apps.map(function(item){
+        var haveNots = Object.keys(apps).map(function(item){
             return Number(item); 
         });
 
