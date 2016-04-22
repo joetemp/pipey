@@ -18,6 +18,12 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
 
     var apps = {};
     var haves = {};
+
+    if (Array.isArray(activities)) {
+        console.log("Yes... activities is an array. Woo hoo."); 
+    } else {
+        console.log("Nope... there are no activities."); 
+    };
     
     deals.forEach(function(deal){
         if (deal.stage_id === 2) {
