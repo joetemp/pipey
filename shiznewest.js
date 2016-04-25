@@ -1,4 +1,4 @@
-const request = require('request-promise');
+const request = require('request-promise');                                                                                                         
 const moment = require('moment');
 moment().format();
 
@@ -13,6 +13,14 @@ function getIt (url) {
     });
 } 
 
+var apps = {}
+
+function isStage(deal) {
+    if (deal.stage_id === this) {
+        apps[deal.id] = deal;
+    } 
+}
+
 Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) {
 
     var deals = results[0];
@@ -21,14 +29,16 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     if (Array.isArray(activities)) {
         console.log("Activities is an array... so we'll loop through it."); 
 
-        var apps = {};
         var haves = {};
 
+        /*
         deals.forEach(function(deal){
             if (deal.stage_id === 2) {
                 apps[deal.id] = deal;
             } 
         });
+        */
+       deals.forEach(isStage, 2);
 
         activities.forEach(function(activity){
             if (activity.subject === '4506-T') {
@@ -62,14 +72,14 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     } else {
         console.log("There are no activities... so we can't loop through them. Instead... we'll just add a 4506-T activity to every app."); 
         
-        var apps = {};
-
-         
+        /*
         deals.forEach(function(deal){
             if (deal.stage_id === 2) {
                 apps[deal.id] = deal;
             } 
         });
+        */
+        deals.forEach(isStage, 2);
 
         console.log(Object.keys(apps));
 
