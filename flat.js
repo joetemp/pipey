@@ -17,28 +17,32 @@ function getIt (url) {
 
 Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) {
 
-    moduleTest();
+    // moduleTest();
 
     var deals = results[0] || [];
     var activities = results[1] || [];
 
-    test4506T(deals);
+    // test4506T(deals, activities);
 
     // Custom Fields
-    var type = '33eb86af817c62123047fc43d6afe908adbd203d';
+    //var type = '33eb86af817c62123047fc43d6afe908adbd203d';
 
     var realDeals = {};
-    var has4506T = {};  
+    // var has4506T = {};  
     var has1003 = {};
 
+    test4506T(deals, activities, realDeals);
+    /*
+     *
     deals.forEach(function(deal){
         if (deal[type] === '1' && deal.stage_id === 2) {
             realDeals[deal.id] = deal; 
         } 
     });
+    */
 
-    console.log('Real deals: ');
-    console.log(Object.keys(realDeals));
+    // console.log('Real deals: ');
+    // console.log(Object.keys(realDeals));
 
     activities.forEach(function(activity){
 	if (activity.subject === '4506-T') {
@@ -64,12 +68,13 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
         return Number(item);  
     });
 
-    console.log('Real deals that need a 4506-T activity: ');
-    console.log(realDealNeeds4506T);
+    // console.log('Real deals that need a 4506-T activity: ');
+    // console.log(realDealNeeds4506T);
 
-    console.log('Real deals that need a 1003 activity: ');
-    console.log(realDealNeeds1003);
+    // console.log('Real deals that need a 1003 activity: ');
+    // console.log(realDealNeeds1003);
 
+    /*
     realDealNeeds4506T.forEach(function(deal){
 	request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
 	    form: {'subject': '4506-T',
@@ -77,7 +82,7 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
 		     'note' : 'Get correctly filled out and signed 4506-T for ' + realDeals[deal].person_id.name + '.',
 		 'due_date' : moment(realDeals[deal].add_time).add(3, 'days').format('YYYY-MM-DD')}});
 
-	console.log(realDeals[deal].person_id.name + ' was created on ' + moment(realDeals[deal].add_time).format('YYYY-MM-DD') + '. So, this task is due on ' + moment(realDeals[deal].add_time).add(3, 'days').format('YYYY-MM-DD') + '.');
+	// console.log(realDeals[deal].person_id.name + ' was created on ' + moment(realDeals[deal].add_time).format('YYYY-MM-DD') + '. So, this task is due on ' + moment(realDeals[deal].add_time).add(3, 'days').format('YYYY-MM-DD') + '.');
     });
 
 
@@ -88,8 +93,9 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
 		     'note' : 'Print, sign and upload an HMC signed 1003 for ' + realDeals[deal].person_id.name + '.',
 		 'due_date' : moment(realDeals[deal].add_time).add(3, 'days').format('YYYY-MM-DD')}});
 
-	console.log(realDeals[deal].person_id.name + ' was created on ' + moment(realDeals[deal].add_time).format('YYYY-MM-DD') + '. So, this task is due on ' + moment(realDeals[deal].add_time).add(3, 'days').format('YYYY-MM-DD') + '.');
+	// console.log(realDeals[deal].person_id.name + ' was created on ' + moment(realDeals[deal].add_time).format('YYYY-MM-DD') + '. So, this task is due on ' + moment(realDeals[deal].add_time).add(3, 'days').format('YYYY-MM-DD') + '.');
     });
+    */
 
 }).then(function(){
 // do more stuff here.
