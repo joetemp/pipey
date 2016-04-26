@@ -1,6 +1,7 @@
 const request = require('request-promise');
 const moment = require('moment');
 const moduleTest = require('./module_test.js');
+const test4506T = require('./test4506T.js');
 moment().format();
 
 var API_KEY = process.env.API_KEY;
@@ -20,6 +21,8 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
 
     var deals = results[0] || [];
     var activities = results[1] || [];
+
+    test4506T(deals);
 
     // Custom Fields
     var type = '33eb86af817c62123047fc43d6afe908adbd203d';
