@@ -1,5 +1,6 @@
 const request = require('request-promise');
 const moment = require('moment');
+const moduleTest = require('./module_test.js');
 moment().format();
 
 var API_KEY = process.env.API_KEY;
@@ -14,6 +15,8 @@ function getIt (url) {
 } 
 
 Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) {
+
+    moduleTest();
 
     var deals = results[0] || [];
     var activities = results[1] || [];
