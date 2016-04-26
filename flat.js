@@ -20,7 +20,6 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
 
     var apps = {};
     var haves = {};
-    var test = {};
 
     deals.forEach(function(deal){
 	if (deal.stage_id === 2) {
@@ -28,23 +27,14 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
 	} 
     });
 
-    deals.forEach(function(deal){
-        if (deal[33eb86af817c62123047fc43d6afe908adbd203d]  === 2) {
-            test[deal.id] = deal; 
-        }       
-    });
-
-
     activities.forEach(function(activity){
 	if (activity.subject === '4506-T') {
 	    haves[activity.deal_id] = activity; 
 	}
     });
-
-    console.log(Object.keys(test));
     
-    //console.log(Object.keys(apps));
-    //console.log(Object.keys(haves));
+    console.log(Object.keys(apps));
+    console.log(Object.keys(haves));
 
     var diffs = Object.keys(apps).filter(function(app) {
 	return (Object.keys(haves).indexOf(app) === -1); 
@@ -54,7 +44,7 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
 	return Number(item); 
     });
 
-    //console.log(haveNots);
+    console.log(haveNots);
 
     haveNots.forEach(function(deal){
 	request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
