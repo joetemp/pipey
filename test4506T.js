@@ -16,7 +16,7 @@ module.exports = function set4506T(deals, activities, realDeals) {
         }   
     });
 
-    console.log('Modulized Real Deals:');
+    console.log('Modular Real Deals:');
     console.log(Object.keys(realDeals));
 
     activities.forEach(function(activity) {
@@ -42,8 +42,6 @@ module.exports = function set4506T(deals, activities, realDeals) {
                    'deal_id': deal,
                      'note' : 'Get correctly filled out and signed 4506-T for ' + realDeals[deal].person_id.name + '.',
                  'due_date' : moment(realDeals[deal].add_time).add(3, 'days').format('YYYY-MM-DD')}});
-
-        // console.log(realDeals[deal].person_id.name + ' was created on ' + moment(realDeals[deal].add_time).format('YYYY-MM-DD') + '. So, this tas
     });
 
 }
