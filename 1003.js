@@ -32,6 +32,6 @@ module.exports = function (API_KEY, deals, activities, realDeals) {
                    'deal_id': deal,
                      'type' : 'task',
                      'note' : 'Sign 1003 for ' + realDeals[deal].person_id.name + '.',
-                 'due_date' : moment(realDeals[deal].add_time).add(3, 'days').format('YYYY-MM-DD')}});
+                 'due_date' : moment(realDeals[deal].stage_change_time).add(3, 'days').format('YYYY-MM-DD')}});
     });
 }
