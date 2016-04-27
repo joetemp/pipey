@@ -24,13 +24,12 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     var type = '33eb86af817c62123047fc43d6afe908adbd203d';
 
 
-    // Go through deals, see which ones are in stage 2.                                                                                             
+    // Go through deals, see which ones are in stage 2 ie 'Applications' AND have a type of '1' ie 'Real Deal'.                                                                                             
     deals.forEach(function(deal) {
-        if (deal[type] === '1' && deal.stage_id === 2) {
+        if (deal.stage_id === 2 && deal[type] === '1') {
             realDeals[deal.id] = deal; 
         }   
     });
-
 
     test4506T(API_KEY, deals, activities, realDeals);
 
