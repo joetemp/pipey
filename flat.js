@@ -52,13 +52,19 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
         }
     });
 
+    /*
+     *
     var diff4506T = Object.keys(realDeals).filter(function(realDeal) {
         return (Object.keys(has4506T).indexOf(realDeal) === -1); 
     });
+    */
 
+    /*
+     *
     var realDealNeeds4506T = diff4506T.map(function(item){
         return Number(item); 
     });
+    */
 
     var diff1003 = Object.keys(realDeals).filter(function(realDeal) {
         return (Object.keys(has1003).indexOf(realDeal) === -1); 
