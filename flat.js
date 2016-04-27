@@ -1,8 +1,5 @@
 const request = require('request-promise');
-const moment = require('moment');
-const moduleTest = require('./module_test.js');
 const test4506T = require('./test4506T.js');
-moment().format();
 
 var API_KEY = process.env.API_KEY;
 
