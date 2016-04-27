@@ -4,29 +4,29 @@ module.exports = function set4506T(API_KEY, deals, activities, realDeals) {
     const moment = require('moment');
     moment().format();
 
-    var has4506T = {};
+    var haves = {};
 
     console.log('Real deals:');
     console.log(Object.keys(realDeals));
 
     activities.forEach(function(activity) {
         if (activity.subject === '4506-T') {
-            has4506T[activity.deal_id] = activity; 
+            haves[activity.deal_id] = activity; 
         } 
     });
 
-    var diff4506T = Object.keys(realDeals).filter(function(realDeal) {
-        return (Object.keys(has4506T).indexOf(realDeal) === -1); 
+    var diff = Object.keys(realDeals).filter(function(realDeal) {
+        return (Object.keys(haves).indexOf(realDeal) === -1); 
     });
 
-    var realDealNeeds4506T = diff4506T.map(function(item) {
+    var needs = diff.map(function(item) {
         return Number(item); 
     });
 
     console.log('Real deals that need 4506-T activities:');
-    console.log(realDealNeeds4506T);
+    console.log(needs);
 
-    realDealNeeds4506T.forEach(function(deal){
+    needs.forEach(function(deal){
         request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
             form: {'subject': '4506-T',
                    'deal_id': deal,
