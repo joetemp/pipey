@@ -6,11 +6,11 @@ module.exports = function (API_KEY, deals, activities, realDeals) {
 
     var haves = {};
 
-    // console.log('Real deals:');
-    // console.log(Object.keys(realDeals));
+    console.log('Real deals:');
+    console.log(Object.keys(realDeals));
 
     activities.forEach(function(activity) {
-        if (activity.subject === '4506-T') {
+        if (activity.subject === 'HMC Signed 1003') {
             haves[activity.deal_id] = activity; 
         } 
     });
@@ -23,14 +23,14 @@ module.exports = function (API_KEY, deals, activities, realDeals) {
         return Number(item); 
     });
 
-    // console.log('Real deals that need 4506-T activities:');
-    // console.log(needs);
+    console.log('Real deals that need 1003 activities:');
+    console.log(needs);
 
     needs.forEach(function(deal){
         request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
-            form: {'subject': '4506-T',
+            form: {'subject': 'HMC Signed 1003',
                    'deal_id': deal,
-                     'note' : 'Get correctly filled out and signed 4506-T for ' + realDeals[deal].person_id.name + '.',
+                     'note' : 'Sign 1003 for ' + realDeals[deal].person_id.name + '.',
                  'due_date' : moment(realDeals[deal].add_time).add(3, 'days').format('YYYY-MM-DD')}});
     });
 }

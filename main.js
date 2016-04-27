@@ -1,5 +1,6 @@
 const request = require('request-promise');
-const test4506T = require('./4506T.js');
+const set4506T = require('./4506T.js');
+const set1003 = require('./1003.js'); 
 
 var API_KEY = process.env.API_KEY;
 
@@ -18,7 +19,6 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     var activities = results[1] || [];
 
     var realDeals = {};
-    var has1003 = {};
 
     // Custom Fields
     var type = '33eb86af817c62123047fc43d6afe908adbd203d';
@@ -31,23 +31,8 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
         }   
     });
 
-    test4506T(API_KEY, deals, activities, realDeals);
-
-    activities.forEach(function(activity){
-	if (activity.subject === '4506-T') {
-	    has4506T[activity.deal_id] = activity; 
-	} else if (activity.subject === 'HMC Signed 1003') {
-            has1003[activity.deal_id] = activity;     
-        }
-    });
-
-    var diff1003 = Object.keys(realDeals).filter(function(realDeal) {
-        return (Object.keys(has1003).indexOf(realDeal) === -1); 
-    });
-
-    var realDealNeeds1003 = diff1003.map(function(item){
-        return Number(item);  
-    });
+    set4506T(API_KEY, deals, activities, realDeals);
+    set1003(API_KEY, deals, activities, realDeals);
 
 }).then(function(){
 // do more stuff here.
