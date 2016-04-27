@@ -1,22 +1,12 @@
-module.exports = function set4506T(deals, activities, realDeals) {
+module.exports = function set4506T(API_KEY, deals, activities, realDeals) {
 
     const request = require('request-promise');
     const moment = require('moment');
     moment().format();
 
-    var API_KEY = process.env.API_KEY;
-
-
     var has4506T = {};
-    var type = '33eb86af817c62123047fc43d6afe908adbd203d';
 
-    deals.forEach(function(deal) {
-        if (deal[type] === '1' && deal.stage_id === 2) {
-            realDeals[deal.id] = deal; 
-        }   
-    });
-
-    console.log('Modular Real Deals:');
+    console.log('Real deals:');
     console.log(Object.keys(realDeals));
 
     activities.forEach(function(activity) {
@@ -33,7 +23,7 @@ module.exports = function set4506T(deals, activities, realDeals) {
         return Number(item); 
     });
 
-    console.log('Modular Real Deals that need 4506-T activities:');
+    console.log('Real deals that need 4506-T activities:');
     console.log(realDealNeeds4506T);
 
     realDealNeeds4506T.forEach(function(deal){
@@ -43,6 +33,4 @@ module.exports = function set4506T(deals, activities, realDeals) {
                      'note' : 'Get correctly filled out and signed 4506-T for ' + realDeals[deal].person_id.name + '.',
                  'due_date' : moment(realDeals[deal].add_time).add(3, 'days').format('YYYY-MM-DD')}});
     });
-
 }
-

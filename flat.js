@@ -1,5 +1,5 @@
 const request = require('request-promise');
-const test4506T = require('./test4506T.js');
+const test4506T = require('./4506T.js');
 
 var API_KEY = process.env.API_KEY;
 
@@ -20,7 +20,19 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     var realDeals = {};
     var has1003 = {};
 
-    test4506T(deals, activities, realDeals);
+    // Custom Fields
+    var type = '33eb86af817c62123047fc43d6afe908adbd203d';
+
+
+    // Go through deals, see which ones are in stage 2.                                                                                             
+    deals.forEach(function(deal) {
+        if (deal[type] === '1' && deal.stage_id === 2) {
+            realDeals[deal.id] = deal; 
+        }   
+    });
+
+
+    test4506T(API_KEY, deals, activities, realDeals);
 
     activities.forEach(function(activity){
 	if (activity.subject === '4506-T') {
