@@ -23,6 +23,8 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     var selfEmployed = {};
     var employed = {};
 
+    var justEmployed = {};
+
     // Custom Fields
     var type = '33eb86af817c62123047fc43d6afe908adbd203d';
     var employment = 'a5fd226d5b7bbe68914cfa093063150bd0f33d83';
@@ -42,6 +44,17 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
             selfEmployed[deal.id] = deal; 
         }
     });
+
+    deals.forEach(function(deal) {
+        if (deal[employment] === '3') {
+            justEmployed[deal.id] = deal; 
+        } 
+    });
+
+    console.log('These people are JUST employed');
+    console.log(Object.keys(justEmployed));
+
+
 
     set4506T(API_KEY, deals, activities, realDeals);
     set1003(API_KEY, deals, activities, realDeals);
