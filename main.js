@@ -1,6 +1,7 @@
 const request = require('request-promise');
 const set4506T = require('./4506T.js');
 const set1003 = require('./1003.js'); 
+const setW2 = require('./w2.js');
 
 var API_KEY = process.env.API_KEY;
 
@@ -19,9 +20,12 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     var activities = results[1] || [];
 
     var realDeals = {};
+    var selfEmployed = {};
+    var employed = {};
 
     // Custom Fields
     var type = '33eb86af817c62123047fc43d6afe908adbd203d';
+    var employment = 'a5fd226d5b7bbe68914cfa093063150bd0f33d83';
 
 
     // Go through deals, see which ones are in stage 2 ie 'Applications' AND have a type of '1' ie 'Real Deal'.                                                                                             
@@ -31,8 +35,17 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
         }   
     });
 
+    deals.forEach(function(deal) {
+        if (deal.stage_id === 2 && deal[type] === '1' && deal[employment] === '3') {
+            employed[deal.id] = deal; 
+        } else if (deal.stage_id === 2 && deal[type] === '1' && deal[employment] === '4') {
+            selfEmployed[deal.id] = deal; 
+        }
+    });
+
     set4506T(API_KEY, deals, activities, realDeals);
     set1003(API_KEY, deals, activities, realDeals);
+    setW2(API_KEY, deals, activities, employed);
 
 }).then(function(){
 // do more stuff here.

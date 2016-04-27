@@ -6,8 +6,8 @@ module.exports = function (API_KEY, deals, activities, realDeals) {
 
     var haves = {};
 
-    console.log('Real deals:');
-    console.log(Object.keys(realDeals));
+    // console.log('Real deals:');
+    // console.log(Object.keys(realDeals));
 
     activities.forEach(function(activity) {
         if (activity.subject === 'HMC Signed 1003') {
@@ -23,8 +23,8 @@ module.exports = function (API_KEY, deals, activities, realDeals) {
         return Number(item); 
     });
 
-    console.log('Real deals that need 1003 activities:');
-    console.log(needs);
+    // console.log('Real deals that need 1003 activities:');
+    // console.log(needs);
 
     needs.forEach(function(deal){
         request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
