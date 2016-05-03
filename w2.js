@@ -6,8 +6,8 @@ module.exports = function (API_KEY, deals, activities, employed) {
 
     var haves = {};
 
-    console.log('Employed people:');
-    console.log(Object.keys(employed));
+    // console.log('Employed people:');
+    // console.log(Object.keys(employed));
 
     activities.forEach(function(activity) {
         if (activity.subject === 'W2') {
@@ -19,13 +19,13 @@ module.exports = function (API_KEY, deals, activities, employed) {
         return (Object.keys(haves).indexOf(item) === -1); 
     });
 
-    console.log(diff);
+    // console.log(diff);
 
     var needs = diff.map(function(item) {
         return Number(item); 
     });
 
-    console.log(needs);
+    // console.log(needs);
 
     needs.forEach(function(deal){
         request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
@@ -34,7 +34,7 @@ module.exports = function (API_KEY, deals, activities, employed) {
                      'type' : 'task',
                      'note' : 'Get most recent W2 for ' + employed[deal].person_id.name + '.',
                  'due_date' : moment(employed[deal].stage_change_time).add(3, 'days').format('YYYY-MM-DD')}});
-        console.log('fuck yeah');
+        // console.log('fuck yeah');
     });
 }
 
