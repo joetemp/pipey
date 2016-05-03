@@ -22,6 +22,7 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     var realDeals = {};
     var selfEmployed = {};
     var employed = {};
+
     var apps = {};
     var refis = {};
 

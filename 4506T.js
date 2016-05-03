@@ -9,26 +9,13 @@ module.exports = function (API_KEY, deals, activities, realDeals, apps, refis) {
     console.log('Real deals:');
     console.log(Object.keys(realDeals));
 
-    console.log('Just Apps:');
-    console.log(Object.keys(apps));
-
-    console.log('Just Refis:');
-    console.log(Object.keys(refis));
-
     var purchaseApps = Object.keys(apps).filter(function(app) {
         return (Object.keys(refis).indexOf(app) === -1);   
     });
 
-    console.log('Apps that are purchases:');
-    console.log(purchaseApps);
-
     var refiApps = Object.keys(apps).filter(function(app) {
         return (Object.keys(refis).indexOf(app) !== -1); 
     });
-
-    console.log('Apps that are refis:');
-    console.log(refiApps);
- 
 
     activities.forEach(function(activity) {
         if (activity.subject === '4506-T') {
@@ -44,8 +31,8 @@ module.exports = function (API_KEY, deals, activities, realDeals, apps, refis) {
         return Number(item); 
     });
 
-    // console.log('Real deals that need 4506-T activities:');
-    // console.log(needs);
+    console.log('Real deals that need 4506-T activities:');
+    console.log(needs);
 
     needs.forEach(function(deal){
         request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
