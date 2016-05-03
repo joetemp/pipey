@@ -66,11 +66,11 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
         } 
     });
 
-    set4506T(API_KEY, deals, activities, realDeals, apps, refis);
+    // set4506T(API_KEY, deals, activities, realDeals, apps, refis);
     set1003(API_KEY, deals, activities, realDeals);
     setW2(API_KEY, deals, activities, employed);
 
-    setMod4506T(API_KEY, deals, activities, apps, refis, noPBL);
+    setMod4506T(API_KEY, activities, apps, refis, noPBL);
 
 }).then(function(){
 // do more stuff here.
