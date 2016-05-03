@@ -22,28 +22,41 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     var realDeals = {};
     var selfEmployed = {};
     var employed = {};
+    var apps = {};
+    var refis = {};
 
     // Custom Fields
     var type = '33eb86af817c62123047fc43d6afe908adbd203d';
     var employment = 'a5fd226d5b7bbe68914cfa093063150bd0f33d83';
 
-
     // Go through deals, see which ones are in stage 2 ie 'Applications' AND have a type of '1' ie 'Real Deal'.                                                                                             
     deals.forEach(function(deal) {
-        if (deal.stage_id === 2 && deal[type] === '1') {
+        if (deal.stage_id === 2 && deal[type] === '6') {
             realDeals[deal.id] = deal; 
         }   
     });
 
     deals.forEach(function(deal) {
-        if (deal.stage_id === 2 && deal[type] === '1' && deal[employment] === '3') {
+        if (deal.stage_id === 2 && deal[type] === '6' && deal[employment] === '3') {
             employed[deal.id] = deal; 
-        } else if (deal.stage_id === 2 && deal[type] === '1' && deal[employment] === '4') {
+        } else if (deal.stage_id === 2 && deal[type] === '6' && deal[employment] === '4') {
             selfEmployed[deal.id] = deal; 
         }
     });
 
-    set4506T(API_KEY, deals, activities, realDeals);
+    deals.forEach(function(deal) {
+        if (deal.stage_id === 2) {
+            apps[deal.id] = deal; 
+        } 
+    });
+
+    deals.forEach(function(deal) {
+        if (deal[type] === '6') {
+            refis[deal.id] = deal; 
+        } 
+    });
+
+    set4506T(API_KEY, deals, activities, realDeals, apps, refis);
     set1003(API_KEY, deals, activities, realDeals);
     setW2(API_KEY, deals, activities, employed);
 

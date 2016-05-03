@@ -1,4 +1,4 @@
-module.exports = function (API_KEY, deals, activities, realDeals) {
+module.exports = function (API_KEY, deals, activities, realDeals, apps, refis) {
 
     const request = require('request-promise');
     const moment = require('moment');
@@ -6,8 +6,29 @@ module.exports = function (API_KEY, deals, activities, realDeals) {
 
     var haves = {};
 
-    // console.log('Real deals:');
-    // console.log(Object.keys(realDeals));
+    console.log('Real deals:');
+    console.log(Object.keys(realDeals));
+
+    console.log('Just Apps:');
+    console.log(Object.keys(apps));
+
+    console.log('Just Refis:');
+    console.log(Object.keys(refis));
+
+    var purchaseApps = Object.keys(apps).filter(function(app) {
+        return (Object.keys(refis).indexOf(app) === -1);   
+    });
+
+    console.log('Apps that are purchases:');
+    console.log(purchaseApps);
+
+    var refiApps = Object.keys(apps).filter(function(app) {
+        return (Object.keys(refis).indexOf(app) !== -1); 
+    });
+
+    console.log('Apps that are refis:');
+    console.log(refiApps);
+ 
 
     activities.forEach(function(activity) {
         if (activity.subject === '4506-T') {
