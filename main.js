@@ -1,8 +1,9 @@
 const request = require('request-promise');
-const set4506T = require('./4506T.js');
-const set1003 = require('./1003.js'); 
-const setW2 = require('./w2.js');
-const setMod4506T = require('./mod4506T.js');
+//const set4506T = require('./4506T.js');
+//const set1003 = require('./1003.js'); 
+//const setW2 = require('./w2.js');
+//const setMod4506T = require('./mod4506T.js');
+const setClean4506T = require('./clean4506T.js');
 
 var API_KEY = process.env.API_KEY;
 
@@ -69,8 +70,8 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     //set4506T(API_KEY, deals, activities, realDeals, apps, refis);
     //set1003(API_KEY, deals, activities, realDeals);
     //setW2(API_KEY, deals, activities, employed);
-
-    setMod4506T(API_KEY, deals, activities, apps, refis, noPBL);
+    //setMod4506T(API_KEY, deals, activities, apps, refis, noPBL);
+    setClean4506T(API_KEY, deals, activities, type);
 
 }).then(function(){
 // do more stuff here.
