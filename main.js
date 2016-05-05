@@ -71,7 +71,7 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     //set1003(API_KEY, deals, activities, realDeals);
     //setW2(API_KEY, deals, activities, employed);
     //setMod4506T(API_KEY, deals, activities, apps, refis, noPBL);
-    setClean4506T(API_KEY, deals, activities, type);
+    setClean4506T(API_KEY, deals, activities, type, pbl);
 
 }).then(function(){
 // do more stuff here.
