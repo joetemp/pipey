@@ -20,9 +20,6 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl) {
         } 
     });
 
-    console.log('The queue:');
-    console.log(Object.keys(queue));
-
     // Filters out deals in queue that are also in haves.
     var diff = Object.keys(queue).filter(function(deal) {
         return (Object.keys(haves).indexOf(deal) === -1); 
@@ -32,12 +29,6 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl) {
     var needs = diff.map(function(deal) {
         return Number(deal); 
     });
-
-    console.log('The diff:');
-    console.log(diff);
-
-    console.log('The needs:');
-    console.log(needs);
 
     // This creates a 4506-T activity for every deal in needs.
     needs.forEach(function(deal){
