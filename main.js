@@ -1,5 +1,7 @@
 const request = require('request-promise');
 const set4506T = require('./4506T.js');
+const set1003 = require('./1003.js');
+const setBCert = require('./bCert.js');
 
 var API_KEY = process.env.API_KEY;
 
@@ -28,9 +30,12 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
                 purchase: '7'};
 
     var pbl = {key: '224edf1ce6c5ae9f19468769128a87982b349f05',
-               no : '14'};
+               no: '14'};
 
-    var employment = 'a5fd226d5b7bbe68914cfa093063150bd0f33d83';
+    var employment = {key: 'a5fd226d5b7bbe68914cfa093063150bd0f33d83',
+                      employed: '3',
+                      selfEmployed: '4'};
+
 
     deals.forEach(function(deal) {
         if (deal.stage_id === 2 && deal[type] === '6' && deal[employment] === '3') {
@@ -41,6 +46,8 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     });
 
     set4506T(API_KEY, deals, activities, app, type, pbl);
+    set1003(API_KEY, deals, activities, app, type, pbl);
+    setBCert(API_KEY, deals, activities, app, type, pbl);
 
 }).then(function(){
 // do more stuff here.
