@@ -21,25 +21,23 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     var deals = results[0] || [];
     var activities = results[1] || [];
 
-    var realDeals = {};
     var selfEmployed = {};
     var employed = {};
 
-    var apps = {};
-    var refis = {};
-    var noPBL = {};
+    // Custom fields and values
 
-    // Custom Fields
+    var type = {key: '33eb86af817c62123047fc43d6afe908adbd203d',
+                refi: '6',
+                purchase: '7'};
+
+    /*
+     *
     var type = '33eb86af817c62123047fc43d6afe908adbd203d';
+        var refi = '6';
+        var purchase = '7';
+    */
     var employment = 'a5fd226d5b7bbe68914cfa093063150bd0f33d83';
     var pbl = '224edf1ce6c5ae9f19468769128a87982b349f05';
-
-    // Go through deals, see which ones are in stage 2 ie 'Applications' AND have a type of '1' ie 'Real Deal'.                                                                                             
-    deals.forEach(function(deal) {
-        if (deal.stage_id === 2 && deal[type] === '6') {
-            realDeals[deal.id] = deal; 
-        }   
-    });
 
     deals.forEach(function(deal) {
         if (deal.stage_id === 2 && deal[type] === '6' && deal[employment] === '3') {
@@ -47,24 +45,6 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
         } else if (deal.stage_id === 2 && deal[type] === '6' && deal[employment] === '4') {
             selfEmployed[deal.id] = deal; 
         }
-    });
-
-    deals.forEach(function(deal) {
-        if (deal.stage_id === 2) {
-            apps[deal.id] = deal; 
-        } 
-    });
-
-    deals.forEach(function(deal) {
-        if (deal[type] === '6') {
-            refis[deal.id] = deal; 
-        } 
-    });
-
-    deals.forEach(function(deal) {
-        if (deal[pbl] === '13') {
-            noPBL[deal.id] = deal; 
-        } 
     });
 
     //set4506T(API_KEY, deals, activities, realDeals, apps, refis);

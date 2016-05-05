@@ -14,7 +14,7 @@ module.exports = function (API_KEY, deals, activities, type, pbl) {
 
     // Defines queue
     deals.forEach(function(deal) {
-        if (deal.stage_id === 2 && deal[type] === '6' || deal.stage_id === 2 && deal[type] === '7' && deal[pbl] === '14') {
+        if (deal.stage_id === 2 && deal[type.key] === type.refi || deal.stage_id === 2 && deal[type.key] === type.purchase && deal[pbl] === '14') {
             queue[deal.id] = deal; 
         } 
     });
