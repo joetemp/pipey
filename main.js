@@ -5,6 +5,7 @@ const setBCert = require('./bCert.js');
 const setW2 = require('./w2.js');
 const setPaystubs = require('./paystubs.js');
 const set1040 = require('./1040.js');
+const setPBL = require('./pbl.js');
 
 var API_KEY = process.env.API_KEY;
 
@@ -28,21 +29,27 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     // Custom fields and values variables
     var type = {key: '33eb86af817c62123047fc43d6afe908adbd203d',
                 refi: '6',
-                purchase: '7'};
+                purchase: '7',
+                prequal: '17'};
 
     var pbl = {key: '224edf1ce6c5ae9f19468769128a87982b349f05',
-               no: '14'};
+               yes: '15',
+               no: '16'};
 
     var employment = {key: 'a5fd226d5b7bbe68914cfa093063150bd0f33d83',
                       employed: '3',
                       selfEmployed: '4'};
+    
 
-    set4506T(API_KEY, deals, activities, app, type, pbl);
+    setPBL(API_KEY, deals, app, type, pbl);
+
+    // Applications activities
+    //set4506T(API_KEY, deals, activities, app, type, pbl);
     set1003(API_KEY, deals, activities, app, type, pbl);
-    setBCert(API_KEY, deals, activities, app, type, pbl);
-    setW2(API_KEY, deals, activities, app, type, pbl, employment);
-    setPaystubs(API_KEY, deals, activities, app, type, pbl, employment);
-    set1040(API_KEY, deals, activities, app, type, pbl, employment);
+    //setBCert(API_KEY, deals, activities, app, type, pbl);
+    //setW2(API_KEY, deals, activities, app, type, pbl, employment);
+    //setPaystubs(API_KEY, deals, activities, app, type, pbl, employment);
+    //set1040(API_KEY, deals, activities, app, type, pbl, employment);
 
 }).then(function(){
 // do more stuff here.

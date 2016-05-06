@@ -1,6 +1,7 @@
 module.exports = function (API_KEY, deals, activities, app, type, pbl, employment) {
     const request = require('request-promise'); 
     const moment = require('moment');
+    moment().format();
     
     var haves = {};
     var queue = {};

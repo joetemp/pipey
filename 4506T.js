@@ -1,6 +1,7 @@
 module.exports = function (API_KEY, deals, activities, app, type, pbl) {
     const request = require('request-promise'); 
     const moment = require('moment');
+    moment().format();
     
     var haves = {};
     var queue = {};
@@ -25,7 +26,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl) {
         return (Object.keys(haves).indexOf(deal) === -1); 
     });
 
-    // Turns ever deal in diff into a number.
+    // Turns every deal in diff into a number.
     var needs = diff.map(function(deal) {
         return Number(deal); 
     });

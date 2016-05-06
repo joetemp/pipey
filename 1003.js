@@ -1,31 +1,29 @@
 module.exports = function (API_KEY, deals, activities, app, type, pbl) {
     const request = require('request-promise'); 
     const moment = require('moment');
+    moment().format();
     
     var haves = {};
     var queue = {};
 
-    // Defines haves
     activities.forEach(function(activity) {
         if (activity.subject === '1003') {
             haves[activity.deal_id] = activity; 
         } 
     });
 
-    // Defines queue
     deals.forEach(function(deal) {
         if (deal.stage_id === app && deal[type.key] === type.refi || 
-            deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.no) {
+            deal.stage_id === app && deal[type.key] === type.purchase ||
+            deal.stage_id === app && deal[type.key] === type.prequal && deal[pbl.key] === pbl.no) {
                 queue[deal.id] = deal; 
         } 
     });
 
-    // Filters out deals in queue that are also in haves.
     var diff = Object.keys(queue).filter(function(deal) {
         return (Object.keys(haves).indexOf(deal) === -1); 
     });
 
-    // Turns ever deal in diff into a number.
     var needs = diff.map(function(deal) {
         return Number(deal); 
     });
