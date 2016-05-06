@@ -30,7 +30,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, employmen
         return Number(deal); 
     }); 
 
-    // This creates a 4506-T activity for every deal in needs.
+    // This creates the activity for every deal in needs.
     needs.forEach(function(deal){
         request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
             form: {'subject': 'W-2',
