@@ -41,9 +41,9 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
                       selfEmployed: '4'};
     
 
-    setPBL(API_KEY, deals, app, type, pbl);
+    //setPBL(API_KEY, deals, app, type, pbl);
 
-    // Applications activities
+    //Applications activities
     //set4506T(API_KEY, deals, activities, app, type, pbl);
     set1003(API_KEY, deals, activities, app, type, pbl);
     //setBCert(API_KEY, deals, activities, app, type, pbl);
