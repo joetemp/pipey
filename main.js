@@ -27,16 +27,16 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     var app = 2;
 
     // Custom fields and values variables
-    var type = {key: '33eb86af817c62123047fc43d6afe908adbd203d',
-                refi: '6',
-                purchase: '7',
-                prequal: '17'};
+    var type = {key: '306c83df3fe0fde00f069be04d8290ff14cae4f6',
+                prequal: '4',
+                purchase: '5',
+                refi: '6'};
 
-    var pbl = {key: '224edf1ce6c5ae9f19468769128a87982b349f05',
-               yes: '15',
-               no: '16'};
+    var pbl = {key: '3b8660ac982233b01a417d3fd0adb50ce8c3ec44',
+               yes: '7',
+               no: '8'};
 
-    var employment = {key: 'a5fd226d5b7bbe68914cfa093063150bd0f33d83',
+    var employment = {key: '',
                       employed: '3',
                       selfEmployed: '4'};
     

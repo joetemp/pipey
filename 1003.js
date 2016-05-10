@@ -12,6 +12,9 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl) {
         } 
     });
 
+    console.log('Deals that have a 1003 activity:');
+    console.log(Object.keys(haves));
+
     deals.forEach(function(deal) {
         if (deal.stage_id === app && deal[type.key] === type.refi || 
             deal.stage_id === app && deal[type.key] === type.purchase ||
@@ -27,6 +30,9 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl) {
     var needs = diff.map(function(deal) {
         return Number(deal); 
     });
+
+    console.log('Deals that need a 1003 activity');
+    console.log(needs);
 
     // This creates the activity for every deal in needs.
     needs.forEach(function(deal){
