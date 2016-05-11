@@ -33,7 +33,6 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
                 refi: '6'};
 
     var pbl = {key: '3b8660ac982233b01a417d3fd0adb50ce8c3ec44',
-               yes: '7',
                no: '8'};
 
     var employment = {key: 'c0c0da3d0f5b8373683333ff2578cd4745386eb7',
@@ -45,11 +44,11 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
 
     //Applications activities
     //set4506T(API_KEY, deals, activities, app, type, pbl);
-    //set1003(API_KEY, deals, activities, app, type, pbl);
+    set1003(API_KEY, deals, activities, app, type, pbl);
     //setBCert(API_KEY, deals, activities, app, type, pbl);
     //setW2(API_KEY, deals, activities, app, type, pbl, employment);
     //setPaystubs(API_KEY, deals, activities, app, type, pbl, employment);
-    set1040(API_KEY, deals, activities, app, type, pbl, employment);
+    //set1040(API_KEY, deals, activities, app, type, pbl, employment);
 
 }).then(function(){
 // do more stuff here.
