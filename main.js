@@ -47,8 +47,8 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     //set4506T(API_KEY, deals, activities, app, type, pbl);
     //set1003(API_KEY, deals, activities, app, type, pbl);
     //setBCert(API_KEY, deals, activities, app, type, pbl);
-    setW2(API_KEY, deals, activities, app, type, pbl, employment);
-    //setPaystubs(API_KEY, deals, activities, app, type, pbl, employment);
+    //setW2(API_KEY, deals, activities, app, type, pbl, employment);
+    setPaystubs(API_KEY, deals, activities, app, type, pbl, employment);
     //set1040(API_KEY, deals, activities, app, type, pbl, employment);
 
 }).then(function(){
