@@ -13,10 +13,14 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, employmen
         }   
     }); 
 
+    console.log ('Deals that have a W-2 activity:');
+    console.log (Object.keys(haves));
+
     // Defines queue
     deals.forEach(function(deal) {
         if (deal.stage_id === app && deal[type.key] === type.refi && deal[employment.key] === employment.employed ||  
-            deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.no && deal[employment.key] === employment.employed) {
+            deal.stage_id === app && deal[type.key] === type.purchase && deal[employment.key] === employment.employed ||
+            deal.stage_id === app && deal[type.key] === type.prequal && deal[pbl.key] === pbl.no && deal[employment.key] === employment.employed) {
                 queue[deal.id] = deal; 
         }   
     }); 
@@ -30,6 +34,9 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, employmen
     var needs = diff.map(function(deal) {
         return Number(deal); 
     }); 
+
+    console.log('Deals that need a W-2 activity:');
+    console.log(needs);
 
     // This creates the activity for every deal in needs.
     needs.forEach(function(deal){

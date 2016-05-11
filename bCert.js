@@ -13,12 +13,16 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl) {
         }   
     }); 
 
+    console.log('Deals that have a bCert activity:');
+    console.log(Object.keys(haves));
+
     // Defines queue
     deals.forEach(function(deal) {
-        if (deal.stage_id === app && deal[type.key] === type.refi ||  
-            deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.no) {
+        if (deal.stage_id === app && deal[type.key] === type.refi || 
+            deal.stage_id === app && deal[type.key] === type.purchase ||                                                                            
+            deal.stage_id === app && deal[type.key] === type.prequal && deal[pbl.key] === pbl.no) {
                 queue[deal.id] = deal; 
-        }   
+        } 
     }); 
 
     // Filters out deals in queue that are also in haves.
@@ -30,6 +34,9 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl) {
     var needs = diff.map(function(deal) {
         return Number(deal); 
     }); 
+
+    console.log('Deals that need a bCert activity:');
+    console.log(needs);
 
     // This creates a 4506-T activity for every deal in needs.
     needs.forEach(function(deal){
