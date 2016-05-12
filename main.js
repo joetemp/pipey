@@ -1,6 +1,7 @@
 const request = require('request-promise');
 const set4506T = require('./4506T.js');
-const set1003 = require('./1003.js');
+// const set1003 = require('./1003.js');
+const set1003 = require('./new1003.js');
 const setBCert = require('./bCert.js');
 const setW2 = require('./w2.js');
 const setPaystubs = require('./paystubs.js');
@@ -33,18 +34,21 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
                 refi: '6'};
 
     var pbl = {key: '3b8660ac982233b01a417d3fd0adb50ce8c3ec44',
-               no: '8'};
+               yes: '13', 
+                no: '8'};
 
     var employment = {key: 'c0c0da3d0f5b8373683333ff2578cd4745386eb7',
                       employed: '9',
                       selfEmployed: '10'};
+
+    var address = {key: 'a957313a8d7c36892662d33954ebd7364117f387'};
     
 
     //setPBL(API_KEY, deals, app, type, pbl);
 
     //Applications activities
     //set4506T(API_KEY, deals, activities, app, type, pbl);
-    set1003(API_KEY, deals, activities, app, type, pbl);
+    set1003(API_KEY, deals, activities, app, type, pbl, address);
     //setBCert(API_KEY, deals, activities, app, type, pbl);
     //setW2(API_KEY, deals, activities, app, type, pbl, employment);
     //setPaystubs(API_KEY, deals, activities, app, type, pbl, employment);
