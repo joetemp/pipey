@@ -8,6 +8,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
     var wants = {};
     var change = {};
     var moreThan = {};
+    var moreThanActivities = {};
 
     activities.forEach(function(activity) {
         if (activity.subject === '1003') {
@@ -26,13 +27,16 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
 
         console.log(c);
 
-        if ( c > 3 ){
+        if ( activity.subject === '1003' && c > 3 ){
             console.log('Burn the witch'); 
             moreThan[activity.deal_id] = activity;
+            moreThanActivities[activity.id] = activity;
         }
     }); 
 
     console.log(Object.keys(moreThan));
+    console.log(Object.keys(moreThanActivities));
+
 
     deals.forEach(function(deal) {
         if (deal.stage_id === app && deal[type.key] === type.refi ||  
@@ -69,13 +73,41 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
         return (Object.keys(moreThan).indexOf(deal) !== -1); 
     });
 
+    console.log('The change same:');
     console.log(changeSame);
 
     var changeArray = changeSame.map(function(deal) {
-        return Number(changeSame); 
+        return Number(deal); 
     });
 
+    console.log('The change array:');
     console.log(changeArray);
+    
+    changeArray.forEach(function(deal){
+        console.log('The index of ' + deal);
+        console.log(changeArray.indexOf(deal)); 
+
+        var index = changeArray.indexOf(deal);
+
+        console.log('Here is the activity: ');
+        console.log(Object.keys(moreThanActivities)[index]);
+    });
+
+    var fucky = changeArray.map(function(deal) {
+
+        var index = changeArray.indexOf(deal);
+
+        return (Object.keys(moreThanActivities)[index]); 
+    });
+
+    var fuckyNum = fucky.map(function(activity) {
+        return Number(activity); 
+    });
+
+    console.log('The fucky array: ');
+    console.log(fucky);
+
+    console.log(fuckyNum);
 
     // console.log('Deals that need a 1003 activity');
     // console.log(needsArray);
@@ -99,4 +131,8 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
                      'note' : 'Sign and scan 1003 for ' + wants[deal].person_id.name + '.',
                  'due_date' : moment(wants[deal].stage_change_time).add(85, 'days').format('YYYY-MM-DD')}});                                         
     });  
+    
+    changeArray.forEach(function(deal) {
+        console.log('Fuckin a rights doggie!'); 
+    });
 }  
