@@ -20,21 +20,28 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
         var a = moment();
         var b = moment(activity.due_date);
 
+        console.log('// Details for ' + activity.person_name + ' //');
+        console.log("Today's date:");
         console.log(a.format('YYYY-MM-DD'));
+        console.log(activity.person_name + "'s " +  '1003 activity due date:');
         console.log(b.format('YYYY-MM-DD'));
 
         var c = b.diff(a, 'days');
 
+        console.log('This is how many days out this task is:');
         console.log(c);
 
         if ( activity.subject === '1003' && c > 3 ){
-            console.log('Burn the witch'); 
             moreThan[activity.deal_id] = activity;
             moreThanActivities[activity.id] = activity;
         }
     }); 
 
+    console.log('// Details for what is happening //');
+
+    console.log('Here are the deals that have 1003 activities more than 3 days out:');
     console.log(Object.keys(moreThan));
+    console.log('Here are the actual 1003 activity ids that are more than 3 days out:');
     console.log(Object.keys(moreThanActivities));
 
 
@@ -51,6 +58,10 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
         }
     }); 
 
+    console.log('!!!!!!!!!!!!!! Wants !!!!!!!!!!!!!!!');
+    console.log(Object.keys(wants));
+
+    console.log('These are deals that are apps, purchases, have PBL and a full address:');
     console.log(Object.keys(change));
 
     var needsDiff = Object.keys(needs).filter(function(deal) {
@@ -73,7 +84,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
         return (Object.keys(moreThan).indexOf(deal) !== -1); 
     });
 
-    console.log('The change same:');
+    console.log('These are deals that have all those things AND a 1003 activity that is more than 3 days out:');
     console.log(changeSame);
 
     var changeArray = changeSame.map(function(deal) {
@@ -119,7 +130,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
                    'deal_id': deal,
                      'type' : 'task',
                      'note' : 'Sign and scan 1003 for ' + needs[deal].person_id.name + '.',
-                 'due_date' : moment(needs[deal].stage_change_time).add(3, 'days').format('YYYY-MM-DD')}});                                         
+                 'due_date' : moment().add(3, 'days').format('YYYY-MM-DD')}});                                         
     });  
 
 
@@ -129,10 +140,13 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
                    'deal_id': deal,
                      'type' : 'task',
                      'note' : 'Sign and scan 1003 for ' + wants[deal].person_id.name + '.',
-                 'due_date' : moment(wants[deal].stage_change_time).add(85, 'days').format('YYYY-MM-DD')}});                                         
+                 'due_date' : moment().add(85, 'days').format('YYYY-MM-DD')}});                                         
     });  
     
-    changeArray.forEach(function(deal) {
-        console.log('Fuckin a rights doggie!'); 
+    fuckyNum.forEach(function(activity) {
+        console.log(activity); 
+
+        request.put('https://api.pipedrive.com/v1/activities/' + activity + '?api_token=' + API_KEY, {
+            form: {'due_date' : moment().add(3, 'days').format('YYYY-MM-DD')}});  
     });
 }  
