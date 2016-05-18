@@ -11,39 +11,19 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
     var haveLaterActivities = {};
 
     activities.forEach(function(activity) {
+        var now = moment();
+        var dueDate = moment(activity.due_date);
+        var daysOut = dueDate.diff(now, 'days');
+
         if (activity.subject === '1003') {
             have[activity.deal_id] = activity; 
         }
 
-
-        // Working real
-        var now = moment();
-        var dueDate = moment(activity.due_date);
-
-        console.log('// Details for ' + activity.person_name + ' //');
-        console.log("Today's date:");
-        console.log(now.format('YYYY-MM-DD'));
-        console.log(activity.person_name + "'s " +  '1003 activity due date:');
-        console.log(dueDate.format('YYYY-MM-DD'));
-
-        var daysOut = dueDate.diff(now, 'days');
-
-        console.log('This is how many days out this task is:');
-        console.log(daysOut);
-
-        if ( activity.subject === '1003' && daysOut > 3 ){
+        if ( activity.subject === '1003' && daysOut > 3 ) {
             haveLaterDeals[activity.deal_id] = activity;
             haveLaterActivities[activity.id] = activity;
         }
     }); 
-
-    console.log('// Details for what is happening //');
-
-    console.log('Here are the deals that have 1003 activities more than 3 days out:');
-    console.log(Object.keys(haveLaterDeals));
-    console.log('Here are the actual 1003 activity ids that are more than 3 days out:');
-    console.log(Object.keys(haveLaterActivities));
-
 
     deals.forEach(function(deal) {
         if (deal.stage_id === app && deal[type.key] === type.refi ||  
@@ -58,73 +38,42 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
         }
     }); 
 
-    console.log('!!!!!!!!!!!!!! Wants !!!!!!!!!!!!!!!');
-    console.log(Object.keys(later));
-
-    console.log('These are deals that are apps, purchases, have PBL and a full address:');
-    console.log(Object.keys(change));
-
-    var needsDiff = Object.keys(soon).filter(function(deal) {
+    var soonQueue = Object.keys(soon).filter(function(deal) {
         return (Object.keys(have).indexOf(deal) === -1); 
     }); 
 
-    var wantsDiff = Object.keys(later).filter(function(deal) {
+    var laterQueue = Object.keys(later).filter(function(deal) {
         return (Object.keys(have).indexOf(deal) === -1); 
     });
 
-    var wantsArray = wantsDiff.map(function(deal) {
+    var laterArray = laterQueue.map(function(deal) {
         return Number(deal); 
     });
 
-    var needsArray = needsDiff.map(function(deal) {
+    var soonArray = soonQueue.map(function(deal) {
         return Number(deal); 
     }); 
 
-    var changeSame = Object.keys(change).filter(function(deal) {
+    var changeQueue = Object.keys(change).filter(function(deal) {
         return (Object.keys(haveLaterDeals).indexOf(deal) !== -1); 
     });
 
-    console.log('These are deals that have all those things AND a 1003 activity that is more than 3 days out:');
-    console.log(changeSame);
-
-    var changeArray = changeSame.map(function(deal) {
+    var changeArray = changeQueue.map(function(deal) {
         return Number(deal); 
     });
 
-    console.log('The change array:');
-    console.log(changeArray);
-    
-    changeArray.forEach(function(deal){
-        console.log('The index of ' + deal);
-        console.log(changeArray.indexOf(deal)); 
-
-        var index = changeArray.indexOf(deal);
-
-        console.log('Here is the activity: ');
-        console.log(Object.keys(haveLaterActivities)[index]);
-    });
-
-    var fucky = changeArray.map(function(deal) {
+    var changeActivityQueue = changeArray.map(function(deal) {
 
         var index = changeArray.indexOf(deal);
 
         return (Object.keys(haveLaterActivities)[index]); 
     });
 
-    var fuckyNum = fucky.map(function(activity) {
+    var changeActivityArray = changeActivityQueue.map(function(activity) {
         return Number(activity); 
     });
 
-    console.log('The fucky array: ');
-    console.log(fucky);
-
-    console.log(fuckyNum);
-
-    // console.log('Deals that need a 1003 activity');
-    // console.log(needsArray);
-
-    // This creates the activity for every deal in needsArray.
-    needsArray.forEach(function(deal){
+    soonArray.forEach(function(deal){
         request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
             form: {'subject': '1003',
                    'deal_id': deal,
@@ -134,7 +83,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
     });  
 
 
-    wantsArray.forEach(function(deal){
+    laterArray.forEach(function(deal){
         request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
             form: {'subject': '1003',
                    'deal_id': deal,
@@ -143,7 +92,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
                  'due_date' : moment().add(85, 'days').format('YYYY-MM-DD')}});                                         
     });  
     
-    fuckyNum.forEach(function(activity) {
+    changeActivityArray.forEach(function(activity) {
         console.log(activity); 
 
         request.put('https://api.pipedrive.com/v1/activities/' + activity + '?api_token=' + API_KEY, {
