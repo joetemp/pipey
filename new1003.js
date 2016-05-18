@@ -3,16 +3,16 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
     const moment = require('moment');
     moment().format();
     
-    var haves = {}; 
-    var newSoon = {}; 
-    var newLater = {};
-    var changed = {};
-    var laterDeals = {};
-    var laterActivities = {};
+    var have = {}; 
+    var soon = {}; 
+    var later = {};
+    var change = {};
+    var haveLaterDeals = {};
+    var haveLaterActivities = {};
 
     activities.forEach(function(activity) {
         if (activity.subject === '1003') {
-            haves[activity.deal_id] = activity; 
+            have[activity.deal_id] = activity; 
         }
 
 
@@ -32,44 +32,44 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
         console.log(daysOut);
 
         if ( activity.subject === '1003' && daysOut > 3 ){
-            laterDeals[activity.deal_id] = activity;
-            laterActivities[activity.id] = activity;
+            haveLaterDeals[activity.deal_id] = activity;
+            haveLaterActivities[activity.id] = activity;
         }
     }); 
 
     console.log('// Details for what is happening //');
 
     console.log('Here are the deals that have 1003 activities more than 3 days out:');
-    console.log(Object.keys(laterDeals));
+    console.log(Object.keys(haveLaterDeals));
     console.log('Here are the actual 1003 activity ids that are more than 3 days out:');
-    console.log(Object.keys(laterActivities));
+    console.log(Object.keys(haveLaterActivities));
 
 
     deals.forEach(function(deal) {
         if (deal.stage_id === app && deal[type.key] === type.refi ||  
             deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.no) {
-                newSoon[deal.id] = deal; 
+                soon[deal.id] = deal; 
         } else if (deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.yes && deal[address.key] === '' ||
                    deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.yes && deal[address.key] === null) {
-                newLater[deal.id] = deal; 
+                later[deal.id] = deal; 
         } else if (deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.yes && deal[address.key] !== '' ||
                    deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.yes && deal[address.key] !== null) {
-                changed[deal.id] = deal; 
+                change[deal.id] = deal; 
         }
     }); 
 
     console.log('!!!!!!!!!!!!!! Wants !!!!!!!!!!!!!!!');
-    console.log(Object.keys(newLater));
+    console.log(Object.keys(later));
 
     console.log('These are deals that are apps, purchases, have PBL and a full address:');
-    console.log(Object.keys(changed));
+    console.log(Object.keys(change));
 
-    var needsDiff = Object.keys(newSoon).filter(function(deal) {
-        return (Object.keys(haves).indexOf(deal) === -1); 
+    var needsDiff = Object.keys(soon).filter(function(deal) {
+        return (Object.keys(have).indexOf(deal) === -1); 
     }); 
 
-    var wantsDiff = Object.keys(newLater).filter(function(deal) {
-        return (Object.keys(haves).indexOf(deal) === -1); 
+    var wantsDiff = Object.keys(later).filter(function(deal) {
+        return (Object.keys(have).indexOf(deal) === -1); 
     });
 
     var wantsArray = wantsDiff.map(function(deal) {
@@ -80,8 +80,8 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
         return Number(deal); 
     }); 
 
-    var changeSame = Object.keys(changed).filter(function(deal) {
-        return (Object.keys(laterDeals).indexOf(deal) !== -1); 
+    var changeSame = Object.keys(change).filter(function(deal) {
+        return (Object.keys(haveLaterDeals).indexOf(deal) !== -1); 
     });
 
     console.log('These are deals that have all those things AND a 1003 activity that is more than 3 days out:');
@@ -91,7 +91,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
         return Number(deal); 
     });
 
-    console.log('The changed array:');
+    console.log('The change array:');
     console.log(changeArray);
     
     changeArray.forEach(function(deal){
@@ -101,14 +101,14 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
         var index = changeArray.indexOf(deal);
 
         console.log('Here is the activity: ');
-        console.log(Object.keys(laterActivities)[index]);
+        console.log(Object.keys(haveLaterActivities)[index]);
     });
 
     var fucky = changeArray.map(function(deal) {
 
         var index = changeArray.indexOf(deal);
 
-        return (Object.keys(laterActivities)[index]); 
+        return (Object.keys(haveLaterActivities)[index]); 
     });
 
     var fuckyNum = fucky.map(function(activity) {
@@ -129,7 +129,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
             form: {'subject': '1003',
                    'deal_id': deal,
                      'type' : 'task',
-                     'note' : 'Sign and scan 1003 for ' + newSoon[deal].person_id.name + '.',
+                     'note' : 'Sign and scan 1003 for ' + soon[deal].person_id.name + '.',
                  'due_date' : moment().add(3, 'days').format('YYYY-MM-DD')}});                                         
     });  
 
@@ -139,7 +139,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
             form: {'subject': '1003',
                    'deal_id': deal,
                      'type' : 'task',
-                     'note' : 'Sign and scan 1003 for ' + newLater[deal].person_id.name + '.',
+                     'note' : 'Sign and scan 1003 for ' + later[deal].person_id.name + '.',
                  'due_date' : moment().add(85, 'days').format('YYYY-MM-DD')}});                                         
     });  
     
