@@ -4,11 +4,11 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
     moment().format();
     
     var haves = {}; 
-    var needs = {}; 
-    var wants = {};
-    var change = {};
-    var moreThan = {};
-    var moreThanActivities = {};
+    var newSoon = {}; 
+    var newLater = {};
+    var changed = {};
+    var laterDeals = {};
+    var laterActivities = {};
 
     activities.forEach(function(activity) {
         if (activity.subject === '1003') {
@@ -17,58 +17,58 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
 
 
         // Working real
-        var a = moment();
-        var b = moment(activity.due_date);
+        var now = moment();
+        var dueDate = moment(activity.due_date);
 
         console.log('// Details for ' + activity.person_name + ' //');
         console.log("Today's date:");
-        console.log(a.format('YYYY-MM-DD'));
+        console.log(now.format('YYYY-MM-DD'));
         console.log(activity.person_name + "'s " +  '1003 activity due date:');
-        console.log(b.format('YYYY-MM-DD'));
+        console.log(dueDate.format('YYYY-MM-DD'));
 
-        var c = b.diff(a, 'days');
+        var daysOut = dueDate.diff(now, 'days');
 
         console.log('This is how many days out this task is:');
-        console.log(c);
+        console.log(daysOut);
 
-        if ( activity.subject === '1003' && c > 3 ){
-            moreThan[activity.deal_id] = activity;
-            moreThanActivities[activity.id] = activity;
+        if ( activity.subject === '1003' && daysOut > 3 ){
+            laterDeals[activity.deal_id] = activity;
+            laterActivities[activity.id] = activity;
         }
     }); 
 
     console.log('// Details for what is happening //');
 
     console.log('Here are the deals that have 1003 activities more than 3 days out:');
-    console.log(Object.keys(moreThan));
+    console.log(Object.keys(laterDeals));
     console.log('Here are the actual 1003 activity ids that are more than 3 days out:');
-    console.log(Object.keys(moreThanActivities));
+    console.log(Object.keys(laterActivities));
 
 
     deals.forEach(function(deal) {
         if (deal.stage_id === app && deal[type.key] === type.refi ||  
             deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.no) {
-                needs[deal.id] = deal; 
+                newSoon[deal.id] = deal; 
         } else if (deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.yes && deal[address.key] === '' ||
                    deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.yes && deal[address.key] === null) {
-                wants[deal.id] = deal; 
+                newLater[deal.id] = deal; 
         } else if (deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.yes && deal[address.key] !== '' ||
                    deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.yes && deal[address.key] !== null) {
-                change[deal.id] = deal; 
+                changed[deal.id] = deal; 
         }
     }); 
 
     console.log('!!!!!!!!!!!!!! Wants !!!!!!!!!!!!!!!');
-    console.log(Object.keys(wants));
+    console.log(Object.keys(newLater));
 
     console.log('These are deals that are apps, purchases, have PBL and a full address:');
-    console.log(Object.keys(change));
+    console.log(Object.keys(changed));
 
-    var needsDiff = Object.keys(needs).filter(function(deal) {
+    var needsDiff = Object.keys(newSoon).filter(function(deal) {
         return (Object.keys(haves).indexOf(deal) === -1); 
     }); 
 
-    var wantsDiff = Object.keys(wants).filter(function(deal) {
+    var wantsDiff = Object.keys(newLater).filter(function(deal) {
         return (Object.keys(haves).indexOf(deal) === -1); 
     });
 
@@ -80,8 +80,8 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
         return Number(deal); 
     }); 
 
-    var changeSame = Object.keys(change).filter(function(deal) {
-        return (Object.keys(moreThan).indexOf(deal) !== -1); 
+    var changeSame = Object.keys(changed).filter(function(deal) {
+        return (Object.keys(laterDeals).indexOf(deal) !== -1); 
     });
 
     console.log('These are deals that have all those things AND a 1003 activity that is more than 3 days out:');
@@ -91,7 +91,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
         return Number(deal); 
     });
 
-    console.log('The change array:');
+    console.log('The changed array:');
     console.log(changeArray);
     
     changeArray.forEach(function(deal){
@@ -101,14 +101,14 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
         var index = changeArray.indexOf(deal);
 
         console.log('Here is the activity: ');
-        console.log(Object.keys(moreThanActivities)[index]);
+        console.log(Object.keys(laterActivities)[index]);
     });
 
     var fucky = changeArray.map(function(deal) {
 
         var index = changeArray.indexOf(deal);
 
-        return (Object.keys(moreThanActivities)[index]); 
+        return (Object.keys(laterActivities)[index]); 
     });
 
     var fuckyNum = fucky.map(function(activity) {
@@ -129,7 +129,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
             form: {'subject': '1003',
                    'deal_id': deal,
                      'type' : 'task',
-                     'note' : 'Sign and scan 1003 for ' + needs[deal].person_id.name + '.',
+                     'note' : 'Sign and scan 1003 for ' + newSoon[deal].person_id.name + '.',
                  'due_date' : moment().add(3, 'days').format('YYYY-MM-DD')}});                                         
     });  
 
@@ -139,7 +139,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
             form: {'subject': '1003',
                    'deal_id': deal,
                      'type' : 'task',
-                     'note' : 'Sign and scan 1003 for ' + wants[deal].person_id.name + '.',
+                     'note' : 'Sign and scan 1003 for ' + newLater[deal].person_id.name + '.',
                  'due_date' : moment().add(85, 'days').format('YYYY-MM-DD')}});                                         
     });  
     
