@@ -42,6 +42,10 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
         return (Object.keys(have).indexOf(deal) === -1); 
     }); 
 
+    var soonArray = soonQueue.map(function(deal) {
+        return Number(deal); 
+    }); 
+
     var laterQueue = Object.keys(later).filter(function(deal) {
         return (Object.keys(have).indexOf(deal) === -1); 
     });
@@ -49,10 +53,6 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
     var laterArray = laterQueue.map(function(deal) {
         return Number(deal); 
     });
-
-    var soonArray = soonQueue.map(function(deal) {
-        return Number(deal); 
-    }); 
 
     var changeQueue = Object.keys(change).filter(function(deal) {
         return (Object.keys(haveLaterDeals).indexOf(deal) !== -1); 
@@ -63,9 +63,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
     });
 
     var changeActivityQueue = changeArray.map(function(deal) {
-
         var index = changeArray.indexOf(deal);
-
         return (Object.keys(haveLaterActivities)[index]); 
     });
 
@@ -82,7 +80,6 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
                  'due_date' : moment().add(3, 'days').format('YYYY-MM-DD')}});                                         
     });  
 
-
     laterArray.forEach(function(deal){
         request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
             form: {'subject': '1003',
@@ -93,8 +90,6 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
     });  
     
     changeActivityArray.forEach(function(activity) {
-        console.log(activity); 
-
         request.put('https://api.pipedrive.com/v1/activities/' + activity + '?api_token=' + API_KEY, {
             form: {'due_date' : moment().add(3, 'days').format('YYYY-MM-DD')}});  
     });
