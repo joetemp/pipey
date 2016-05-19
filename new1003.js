@@ -7,8 +7,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
     var soon = {}; 
     var later = {};
     var change = {};
-    var haveLaterDeals = {};
-    var haveLaterActivities = {};
+    var haveLater = {};
 
     deals.forEach(function(deal) {
         if (deal.stage_id === app && deal[type.key] === type.refi ||  
@@ -33,17 +32,9 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
         }
 
         if ( activity.subject === '1003' && daysOut > 3 ) {
-            haveLaterDeals[activity.deal_id] = activity;
-            haveLaterActivities[activity.id] = activity;
+            haveLater[activity.deal_id] = activity.id;
         }
     }); 
-
-    console.log('Deals that should have a soon 1003 activity:');
-    console.log(Object.keys(soon));
-    console.log('Deals that should have a later 1003 activity:');
-    console.log(Object.keys(later));
-    console.log('Deals that just changed from the later to a soon 1003 activity queue:');
-    console.log(Object.keys(change));
 
     var soonQueue = Object.keys(soon).filter(function(deal) {
         return (Object.keys(have).indexOf(deal) === -1); 
@@ -53,9 +44,6 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
         return Number(deal); 
     }); 
 
-    console.log('Deals that still need a soon 1003 activity:');
-    console.log(soonArray);
-
     var laterQueue = Object.keys(later).filter(function(deal) {
         return (Object.keys(have).indexOf(deal) === -1); 
     });
@@ -64,27 +52,12 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
         return Number(deal); 
     });
 
-    console.log('Deals that still need a later 1003 activity:');
-    console.log(laterArray);
-
     var changeQueue = Object.keys(change).filter(function(deal) {
-        return (Object.keys(haveLaterDeals).indexOf(deal) !== -1); 
+        return (Object.keys(haveLater).indexOf(deal) !== -1); 
     });
 
     var changeArray = changeQueue.map(function(deal) {
         return Number(deal); 
-    });
-
-    console.log('Deals that still need a change 1003 activity:');
-    console.log(changeArray);
-
-    var changeActivityQueue = changeArray.map(function(deal) {
-        var index = changeArray.indexOf(deal);
-        return (Object.keys(haveLaterActivities)[index]); 
-    });
-
-    var changeActivityArray = changeActivityQueue.map(function(activity) {
-        return Number(activity); 
     });
 
     soonArray.forEach(function(deal){
@@ -94,8 +67,6 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
                      'type' : 'task',
                      'note' : 'Sign and scan 1003 for ' + soon[deal].person_id.name + '.',
                  'due_date' : moment().add(3, 'days').format('YYYY-MM-DD')}});                                         
-
-        console.log(deal + ' just got a soon 1003 Activity');
     });  
 
     laterArray.forEach(function(deal){
@@ -105,14 +76,10 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
                      'type' : 'task',
                      'note' : 'Sign and scan 1003 for ' + later[deal].person_id.name + '.',
                  'due_date' : moment().add(85, 'days').format('YYYY-MM-DD')}});                                         
-
-        console.log(deal + ' just got a later 1003 Activity');
     });  
     
-    changeActivityArray.forEach(function(activity) {
-        request.put('https://api.pipedrive.com/v1/activities/' + activity + '?api_token=' + API_KEY, {
+    changeArray.forEach(function(deal) {
+        request.put('https://api.pipedrive.com/v1/activities/' + haveLater[deal] + '?api_token=' + API_KEY, {
             form: {'due_date' : moment().add(3, 'days').format('YYYY-MM-DD')}});  
-
-        console.log(activity + ' just had a change made to its due date');
     });
 }  
