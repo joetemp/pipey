@@ -10,6 +10,19 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
     var haveLaterDeals = {};
     var haveLaterActivities = {};
 
+    deals.forEach(function(deal) {
+        if (deal.stage_id === app && deal[type.key] === type.refi ||  
+            deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.no) {
+                soon[deal.id] = deal; 
+        } else if (deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.yes && deal[address.key] === '' ||
+                   deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.yes && deal[address.key] === null) {
+                later[deal.id] = deal; 
+        } else if (deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.yes && deal[address.key] !== '' ||
+                   deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.yes && deal[address.key] !== null) {
+                change[deal.id] = deal; 
+        }
+    }); 
+
     activities.forEach(function(activity) {
         var now = moment();
         var dueDate = moment(activity.due_date);
@@ -25,18 +38,12 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
         }
     }); 
 
-    deals.forEach(function(deal) {
-        if (deal.stage_id === app && deal[type.key] === type.refi ||  
-            deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.no) {
-                soon[deal.id] = deal; 
-        } else if (deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.yes && deal[address.key] === '' ||
-                   deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.yes && deal[address.key] === null) {
-                later[deal.id] = deal; 
-        } else if (deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.yes && deal[address.key] !== '' ||
-                   deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.yes && deal[address.key] !== null) {
-                change[deal.id] = deal; 
-        }
-    }); 
+    console.log('Deals that should have a soon 1003 activity:');
+    console.log(Object.keys(soon));
+    console.log('Deals that should have a later 1003 activity:');
+    console.log(Object.keys(later));
+    console.log('Deals that just changed from the later to a soon 1003 activity queue:');
+    console.log(Object.keys(change));
 
     var soonQueue = Object.keys(soon).filter(function(deal) {
         return (Object.keys(have).indexOf(deal) === -1); 
@@ -46,6 +53,9 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
         return Number(deal); 
     }); 
 
+    console.log('Deals that still need a soon 1003 activity:');
+    console.log(soonArray);
+
     var laterQueue = Object.keys(later).filter(function(deal) {
         return (Object.keys(have).indexOf(deal) === -1); 
     });
@@ -54,6 +64,9 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
         return Number(deal); 
     });
 
+    console.log('Deals that still need a later 1003 activity:');
+    console.log(laterArray);
+
     var changeQueue = Object.keys(change).filter(function(deal) {
         return (Object.keys(haveLaterDeals).indexOf(deal) !== -1); 
     });
@@ -61,6 +74,9 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
     var changeArray = changeQueue.map(function(deal) {
         return Number(deal); 
     });
+
+    console.log('Deals that still need a change 1003 activity:');
+    console.log(changeArray);
 
     var changeActivityQueue = changeArray.map(function(deal) {
         var index = changeArray.indexOf(deal);
@@ -78,6 +94,8 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
                      'type' : 'task',
                      'note' : 'Sign and scan 1003 for ' + soon[deal].person_id.name + '.',
                  'due_date' : moment().add(3, 'days').format('YYYY-MM-DD')}});                                         
+
+        console.log(deal + ' just got a soon 1003 Activity');
     });  
 
     laterArray.forEach(function(deal){
@@ -87,10 +105,14 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
                      'type' : 'task',
                      'note' : 'Sign and scan 1003 for ' + later[deal].person_id.name + '.',
                  'due_date' : moment().add(85, 'days').format('YYYY-MM-DD')}});                                         
+
+        console.log(deal + ' just got a later 1003 Activity');
     });  
     
     changeActivityArray.forEach(function(activity) {
         request.put('https://api.pipedrive.com/v1/activities/' + activity + '?api_token=' + API_KEY, {
             form: {'due_date' : moment().add(3, 'days').format('YYYY-MM-DD')}});  
+
+        console.log(activity + ' just had a change made to its due date');
     });
 }  
