@@ -1,5 +1,6 @@
 const request = require('request-promise');
-const set4506T = require('./4506T.js');
+//const set4506T = require('./4506T.js');
+const set4506T = require('./new4506T.js');
 // const set1003 = require('./1003.js');
 const set1003 = require('./new1003.js');
 const setBCert = require('./bCert.js');
@@ -47,7 +48,7 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     //setPBL(API_KEY, deals, app, type, pbl);
 
     //Applications activities
-    //set4506T(API_KEY, deals, activities, app, type, pbl);
+    set4506T(API_KEY, deals, activities, app, type, pbl, address);
     set1003(API_KEY, deals, activities, app, type, pbl, address);
     //setBCert(API_KEY, deals, activities, app, type, pbl);
     //setW2(API_KEY, deals, activities, app, type, pbl, employment);
