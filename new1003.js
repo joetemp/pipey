@@ -3,10 +3,10 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
     const moment = require('moment');
     moment().format();
     
-    var have = {}; 
     var soon = {}; 
     var later = {};
     var change = {};
+    var have = {}; 
     var haveLater = {};
 
     deals.forEach(function(deal) {
