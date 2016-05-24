@@ -18,12 +18,12 @@ module.exports = function (API_KEY, deals) {
         return Number(deal); 
     });
 
-    Promise.all([junk, junk]).then(function(){
+    return Promise.all([junk, junk]).then(function(){
 
-        dealsArr.forEach(function(deal){
+        var promises = dealsArr.map(function(deal){
             var url = 'https://api.pipedrive.com/v1/deals/' + deal + '/participants?start=0&api_token=' + API_KEY;
 
-            Promise.all([getIt(url), junk]).then(function(results) {
+            return Promise.all([getIt(url), junk]).then(function(results) {
                 var people = results[0]; 
 
                 console.log('Participants of deal ' + deal);
@@ -33,6 +33,8 @@ module.exports = function (API_KEY, deals) {
                 });
             });
         });
+
+        return Promise.all(promises);
 
     }).then(function(){
         console.log('Why am I not logged last?');
