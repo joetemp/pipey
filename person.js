@@ -21,11 +21,13 @@ module.exports = function (API_KEY, deals) {
     Promise.all([junk, junk]).then(function(){
         var swear = "fuck";
         console.log("the big test"); 
+        junk = 'something';
 
         return swear;
     }).then(function(swear){
         console.log("the even bigger test"); 
         console.log(swear);
+        console.log(junk);
     });
 
     /*
