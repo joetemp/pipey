@@ -28,6 +28,10 @@ module.exports = function (API_KEY, deals) {
         console.log("the even bigger test"); 
         console.log(swear);
         console.log(junk);
+
+        dealsArr.forEach(function(deal){
+            console.log(deal + " butt"); 
+        });
     });
 
     /*
