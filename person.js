@@ -19,37 +19,22 @@ module.exports = function (API_KEY, deals) {
     });
 
     Promise.all([junk, junk]).then(function(){
-        var swear = "fuck";
-        console.log("the big test"); 
-        junk = 'something';
-
-        return swear;
-    }).then(function(swear){
-        console.log("the even bigger test"); 
-        console.log(swear);
-        console.log(junk);
 
         dealsArr.forEach(function(deal){
-            console.log(deal + " butt"); 
-        });
-    });
+            var url = 'https://api.pipedrive.com/v1/deals/' + deal + '/participants?start=0&api_token=' + API_KEY;
 
-    /*
-     *
-    dealsArr.forEach(function(deal){
-    
-        var url = 'https://api.pipedrive.com/v1/deals/' + deal + '/participants?start=0&api_token=' + API_KEY;
+            Promise.all([getIt(url), junk]).then(function(results) {
+                var people = results[0]; 
 
-        Promise.all([getIt(url), junk]).then(function(results) {
-            var people = results[0]; 
+                console.log('Participants of deal ' + deal);
 
-            console.log('Participants of deal ' + deal);
-
-            people.forEach(function(person) {
-                console.log(person.person_id.value); 
+                people.forEach(function(person){
+                    console.log(person.person_id.value); 
+                });
             });
         });
 
+    }).then(function(){
+        console.log('Why am I not logged last?');
     });
-    */
 } 
