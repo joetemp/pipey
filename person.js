@@ -18,7 +18,7 @@ module.exports = function (API_KEY, deals) {
         return Number(deal); 
     });
 
-    return Promise.all([junk, junk]).then(function(){
+    return Promise.all([junk]).then(function(){
 
         var promises = dealsArr.map(function(deal){
             var url = 'https://api.pipedrive.com/v1/deals/' + deal + '/participants?start=0&api_token=' + API_KEY;
