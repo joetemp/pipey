@@ -8,6 +8,7 @@ const setW2 = require('./w2.js');
 const setPaystubs = require('./paystubs.js');
 const set1040 = require('./1040.js');
 const setPBL = require('./pbl.js');
+const setPerson = require('./person.js');
 
 var API_KEY = process.env.API_KEY;
 
@@ -48,12 +49,14 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     //setPBL(API_KEY, deals, app, type, pbl);
 
     //Applications activities
-    set4506T(API_KEY, deals, activities, app, type, pbl, address);
-    set1003(API_KEY, deals, activities, app, type, pbl, address);
+    //set4506T(API_KEY, deals, activities, app, type, pbl, address);
+    //set1003(API_KEY, deals, activities, app, type, pbl, address);
     //setBCert(API_KEY, deals, activities, app, type, pbl);
     //setW2(API_KEY, deals, activities, app, type, pbl, employment);
     //setPaystubs(API_KEY, deals, activities, app, type, pbl, employment);
     //set1040(API_KEY, deals, activities, app, type, pbl, employment);
+    
+    setPerson(API_KEY, deals);
 
 }).then(function(){
 // do more stuff here.
