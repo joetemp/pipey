@@ -9,6 +9,7 @@ const setPaystubs = require('./paystubs.js');
 const set1040 = require('./1040.js');
 const setPBL = require('./pbl.js');
 const setPerson = require('./person.js');
+const setNewW2 = require('./newW2.js');
 
 var API_KEY = process.env.API_KEY;
 
@@ -58,7 +59,8 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     //setPaystubs(API_KEY, deals, activities, app, type, pbl, employment);
     //set1040(API_KEY, deals, activities, app, type, pbl, employment);
     
-    setPerson(API_KEY, deals, test);
+    //setPerson(API_KEY, deals, test);
+    setNewW2(API_KEY, deals, activities, test);
 
 }).then(function(){
 // do more stuff here.
