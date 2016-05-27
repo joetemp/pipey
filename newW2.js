@@ -5,6 +5,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address){
 
     var soon = {};
     var soonPart = {};
+    var have = {};
 
     deals.map(function(deal) {
         if (deal.stage_id === 2 && deal[type.key] === type.refi ||
@@ -12,6 +13,14 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address){
                 soon[deal.id] = deal; 
         }
     });
+
+    activities.map(function(activity) {
+        if (activity.subject === 'W-2') {
+            have[activity.person_id] = activity; 
+        } 
+    });
+
+    console.log(Object.keys(have));
 
     var soonArr = (Object.keys(soon)).map(function(deal) {
         return Number(deal); 
@@ -39,7 +48,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address){
 
                     soonPart[person.person_id.value] = person;
 
-                    // console.log(Object.keys(soonPart));
+
                 });
             }); 
         });
@@ -48,6 +57,14 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address){
 
     }).then(function() {
         console.log(Object.keys(soonPart)); 
+
+        var diff = Object.keys(soonPart).filter(function(part) {
+            return Object.keys(have).indexOf(part) === -1; 
+        });
+
+        console.log('Here is the diff:');
+        console.log(diff);
+
     });
 
 
