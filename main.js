@@ -60,7 +60,7 @@ Promise.all([getIt(urls.deals), getIt(urls.activities)]).then(function(results) 
     //set1040(API_KEY, deals, activities, app, type, pbl, employment);
     
     //setPerson(API_KEY, deals, test);
-    setNewW2(API_KEY, deals, activities, type, pbl, address);
+    setNewW2(API_KEY, deals, activities, app, type, pbl, address);
 
 }).then(function(){
 // do more stuff here.
