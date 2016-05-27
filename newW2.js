@@ -29,9 +29,10 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address){
         var url = 'https://api.pipedrive.com/v1/deals/' + deal + '/participants?start=0&api_token=' + API_KEY;
 
         Promise.all([getIt(url)]).then(function(results){
-            console.log(results); 
+            console.log(results);
         }); 
     });
+
 
 
 }
