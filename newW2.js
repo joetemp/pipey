@@ -25,12 +25,29 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address){
         }); 
     }
 
-    soonArr.map(function(deal) {
-        var url = 'https://api.pipedrive.com/v1/deals/' + deal + '/participants?start=0&api_token=' + API_KEY;
+    return Promise.all([]).then(function() {
+        
+        var promises = soonArr.map(function(deal) {
+            
+            var url = 'https://api.pipedrive.com/v1/deals/' + deal + '/participants?start=0&api_token=' + API_KEY;
 
-        Promise.all([getIt(url)]).then(function(results){
-            console.log(results);
-        }); 
+            return Promise.all([getIt(url)]).then(function(results){
+                // console.log(results);
+
+                results[0].map(function(person){
+                    // console.log(person.id); 
+
+                    soonPart[person.person_id.value] = person;
+
+                    // console.log(Object.keys(soonPart));
+                });
+            }); 
+        });
+
+        return Promise.all(promises);
+
+    }).then(function() {
+        console.log(Object.keys(soonPart)); 
     });
 
 
