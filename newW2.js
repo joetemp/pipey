@@ -1,4 +1,4 @@
-module.exports = function (API_KEY, deals, activities, app, type, pbl, address){
+module.exports = function (API_KEY, deals, activities, app, type, pbl, address, test){
     const request = require('request-promise');
     const moment = require('moment');
     moment().format();
@@ -20,12 +20,14 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address){
         } 
     });
 
+    console.log('Here are the people who already have a W-2 activity:');
     console.log(Object.keys(have));
 
     var soonArr = (Object.keys(soon)).map(function(deal) {
         return Number(deal); 
     });
 
+    console.log('Here are the deals that could potentially need a W-2 soon:');
     console.log(soonArr);
 
     function getIt(url) {
@@ -46,8 +48,11 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address){
                 results[0].map(function(person){
                     // console.log(person.id); 
 
-                    soonPart[person.person_id.value] = person;
+                   // soonPart[person.person_id.value] = person;
 
+                    if (person.person[test.key] === '14') {
+                        soonPart[person.person_id.value] = person;
+                    }
 
                 });
             }); 
@@ -56,14 +61,21 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address){
         return Promise.all(promises);
 
     }).then(function() {
+        console.log('Here are the people associated with those deals that are EMPLOYED:');
         console.log(Object.keys(soonPart)); 
 
-        var diff = Object.keys(soonPart).filter(function(part) {
+        var soonQueue = Object.keys(soonPart).filter(function(part) {
             return Object.keys(have).indexOf(part) === -1; 
         });
 
-        console.log('Here is the diff:');
-        console.log(diff);
+        var soonQueueArr = soonQueue.map(function(part) {
+            return Number(part); 
+        });
+        console.log('Here is the soon queue:');
+        console.log(soonQueueArr);
+
+        console.log("Here is John Elway's related deal");
+        console.log(soonPart[63].related_item_data.deal_id);
 
     });
 
