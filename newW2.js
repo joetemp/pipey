@@ -16,7 +16,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address, 
 
     activities.map(function(activity) {
         if (activity.subject === 'W-2') {
-            have[activity.person_id] = activity; 
+            have[activity.person_id + activity.deal_id] = activity; 
         } 
     });
 
@@ -51,7 +51,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address, 
                    // soonPart[person.person_id.value] = person;
 
                     if (person.person[test.key] === '14') {
-                        soonPart[person.person_id.value] = person;
+                        soonPart[person.person.id + person.related_item_id] = person;
                     }
 
                 });
@@ -74,11 +74,16 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address, 
         console.log('Here is the soon queue:');
         console.log(soonQueueArr);
 
-        console.log("Here is John Elway's related deal");
-        console.log(soonPart[63].related_item_data.deal_id);
+        soonQueueArr.map(function(combo){
+	    request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
+		form: {'subject': 'W-2',
+		       'deal_id': combo - soonPart[combo].person.id,
+                     'person_id': combo - soonPart[combo].related_item_id,
+			 'type' : 'task',
+			 'note' : 'Sign and scan 1003 for ' + soonPart[combo].person_id.name + '.',
+		     'due_date' : moment().add(3, 'days').format('YYYY-MM-DD')}});
+    	});
 
     });
-
-
 
 }
