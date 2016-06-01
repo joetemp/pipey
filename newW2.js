@@ -16,7 +16,19 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address, 
 
     activities.map(function(activity) {
         if (activity.subject === 'W-2') {
-            have[activity.person_id + activity.deal_id] = activity; 
+
+            var dealID = activity.deal_id.toString();
+            var personID = activity.person_id.toString();
+
+            var cat = dealID.concat(personID);
+
+            console.log(cat);
+
+            have[cat] = activity;
+
+            
+
+            // have[activity.person_id + activity.deal_id] = activity; 
         } 
     });
 
@@ -51,7 +63,11 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address, 
                    // soonPart[person.person_id.value] = person;
 
                     if (person.person[test.key] === '14') {
-                        soonPart[person.person.id + person.related_item_id] = person;
+
+                        var relatedItemID = person.related_item_id.toString();
+                        var personID = person.person.id.toString();
+                        var cat = relatedItemID.concat(personID);
+                        soonPart[cat] = person;
                     }
 
                 });
@@ -64,23 +80,21 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address, 
         console.log('Here are the people associated with those deals that are EMPLOYED:');
         console.log(Object.keys(soonPart)); 
 
+
         var soonQueue = Object.keys(soonPart).filter(function(part) {
             return Object.keys(have).indexOf(part) === -1; 
         });
 
-        var soonQueueArr = soonQueue.map(function(part) {
-            return Number(part); 
-        });
         console.log('Here is the soon queue:');
-        console.log(soonQueueArr);
+        console.log(soonQueue);
 
-        soonQueueArr.map(function(combo){
+        soonQueue.map(function(cat){
 	    request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
 		form: {'subject': 'W-2',
-		       'deal_id': combo - soonPart[combo].person.id,
-                     'person_id': combo - soonPart[combo].related_item_id,
+		       'deal_id': soonPart[cat].related_item_id,
+                     'person_id': soonPart[cat].person.id,
 			 'type' : 'task',
-			 'note' : 'Sign and scan 1003 for ' + soonPart[combo].person_id.name + '.',
+			 'note' : 'Sign and scan 1003 for ' + soonPart[cat].person_id.name + '.',
 		     'due_date' : moment().add(3, 'days').format('YYYY-MM-DD')}});
     	});
 
