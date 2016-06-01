@@ -20,7 +20,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address, 
             var dealID = activity.deal_id.toString();
             var personID = activity.person_id.toString();
 
-            var cat = dealID.concat(personID);
+            var cat = dealID + personID;
 
             console.log(cat);
 
@@ -66,7 +66,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address, 
 
                         var relatedItemID = person.related_item_id.toString();
                         var personID = person.person.id.toString();
-                        var cat = relatedItemID.concat(personID);
+                        var cat = relatedItemID + personID;
                         soonPart[cat] = person;
                     }
 
