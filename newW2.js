@@ -5,30 +5,28 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address, 
 
     var soon = {};
     var soonPart = {};
+    var later = {};
+    var laterPart = {};
     var have = {};
 
     deals.map(function(deal) {
-        if (deal.stage_id === 2 && deal[type.key] === type.refi ||
-            deal.stage_id === 2 && deal[type.key] === type.purchase && deal[pbl.key] === pbl.no) {
+        if (deal.stage_id === app && deal[type.key] === type.refi ||
+            deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.no) {
                 soon[deal.id] = deal; 
+        } else if (deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.yes && deal[address.key] === '' ||
+                   deal.stage_id === app && deal[type.key] === type.purchase && deal[pbl.key] === pbl.yes && deal[address.key] === null) {
+                later[deal.id] = deal; 
         }
     });
 
     activities.map(function(activity) {
         if (activity.subject === 'W-2') {
-
             var dealID = activity.deal_id.toString();
             var personID = activity.person_id.toString();
-
             var cat = dealID + personID;
 
             console.log(cat);
-
             have[cat] = activity;
-
-            
-
-            // have[activity.person_id + activity.deal_id] = activity; 
         } 
     });
 
@@ -49,37 +47,30 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address, 
     }
 
     return Promise.all([]).then(function() {
-        
         var promises = soonArr.map(function(deal) {
-            
             var url = 'https://api.pipedrive.com/v1/deals/' + deal + '/participants?start=0&api_token=' + API_KEY;
 
             return Promise.all([getIt(url)]).then(function(results){
-                // console.log(results);
 
-                results[0].map(function(person){
-                    // console.log(person.id); 
+                results[0].map(function(part){
 
-                   // soonPart[person.person_id.value] = person;
+                    if (part.person[test.key] === '14') {
 
-                    if (person.person[test.key] === '14') {
-
-                        var relatedItemID = person.related_item_id.toString();
-                        var personID = person.person.id.toString();
+                        var relatedItemID = part.related_item_id.toString();
+                        var personID = part.person.id.toString();
                         var cat = relatedItemID + personID;
-                        soonPart[cat] = person;
+
+                        soonPart[cat] = part;
                     }
 
                 });
             }); 
         });
-
         return Promise.all(promises);
 
     }).then(function() {
         console.log('Here are the people associated with those deals that are EMPLOYED:');
         console.log(Object.keys(soonPart)); 
-
 
         var soonQueue = Object.keys(soonPart).filter(function(part) {
             return Object.keys(have).indexOf(part) === -1; 
@@ -98,6 +89,8 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address, 
 		     'due_date' : moment().add(3, 'days').format('YYYY-MM-DD')}});
     	});
 
+    }).then(function() {
+        console.log("Do moar shit heeeeaaaaare!!!"); 
     });
 
 }
