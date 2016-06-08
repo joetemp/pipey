@@ -176,5 +176,4 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address, 
                      'due_date' : moment().add(85, 'days').format('YYYY-MM-DD')}});
         });
     });
-
 } 
