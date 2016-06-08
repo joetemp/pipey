@@ -40,7 +40,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address, 
             personID = activity.person_id.toString();
             cat = dealID + personID;
 
-            console.log(cat);
+            //console.log(cat);
             have[cat] = activity;
         } 
 
@@ -49,13 +49,13 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address, 
             personID = activity.person_id.toString();
             cat = dealID + personID;
 
-            console.log(cat);
+            // console.log(cat);
             haveLater[cat] = activity; 
         }
     });
 
-    console.log('Here are the people who already have a W-2 activity:');
-    console.log(Object.keys(have));
+    //console.log('Here are the people who already have a W-2 activity:');
+    //console.log(Object.keys(have));
 
     var soonArr = (Object.keys(soon)).map(function(deal) {
         return Number(deal); 
@@ -69,14 +69,14 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address, 
         return Number(deal); 
     });
 
-    console.log('Here are the deals that could potentially need a W-2 SOON:');
-    console.log(soonArr);
+    //console.log('Here are the deals that could potentially need a W-2 SOON:');
+    //console.log(soonArr);
 
-    console.log('Here are the deals that could potentially need a W-2 LATER:');
-    console.log(laterArr);
+    //console.log('Here are the deals that could potentially need a W-2 LATER:');
+    //console.log(laterArr);
 
-    console.log('Here are the deals that could potentially need a CHANGE in their W-2 due date:');
-    console.log(changeArr);
+    //console.log('Here are the deals that could potentially need a CHANGE in their W-2 due date:');
+    //console.log(changeArr);
 
 
     function getIt(url) {
@@ -109,15 +109,15 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address, 
         return Promise.all(promises);
 
     }).then(function() {
-        console.log('Here are the people associated with the SOON deals that are EMPLOYED:');
-        console.log(Object.keys(soonPart)); 
+        //console.log('Here are the people associated with the SOON deals that are EMPLOYED:');
+        //console.log(Object.keys(soonPart)); 
 
         var soonQueue = Object.keys(soonPart).filter(function(part) {
             return Object.keys(have).indexOf(part) === -1; 
         });
 
-        console.log('Here is the SOON queue:');
-        console.log(soonQueue);
+        //console.log('Here is the SOON queue:');
+        //console.log(soonQueue);
 
         soonQueue.map(function(cat){
             request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
@@ -156,15 +156,15 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address, 
         return Promise.all(promises);
 
     }).then(function() {
-        console.log('Here are the people associated with the LATER deals that are EMPLOYED:');
-        console.log(Object.keys(laterPart)); 
+        //console.log('Here are the people associated with the LATER deals that are EMPLOYED:');
+        //console.log(Object.keys(laterPart)); 
 
         var laterQueue = Object.keys(laterPart).filter(function(part) {
             return Object.keys(have).indexOf(part) === -1; 
         });
 
-        console.log('Here is the LATER queue:');
-        console.log(laterQueue);
+        //console.log('Here is the LATER queue:');
+        //console.log(laterQueue);
 
         laterQueue.map(function(cat){
             request.post('https://api.pipedrive.com/v1/activities?api_token=' + API_KEY, {
