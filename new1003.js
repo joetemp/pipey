@@ -22,6 +22,8 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
         }
     }); 
 
+    console.log(change);
+
     activities.forEach(function(activity) {
         var now = moment();
         var dueDate = moment(activity.due_date);
@@ -79,6 +81,7 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address) 
     });  
     
     changeArray.forEach(function(deal) {
+        console.log(haveLater[deal]);
         request.put('https://api.pipedrive.com/v1/activities/' + haveLater[deal] + '?api_token=' + API_KEY, {
             form: {'due_date' : moment().add(3, 'days').format('YYYY-MM-DD')}});  
     });

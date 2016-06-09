@@ -50,9 +50,22 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address, 
             cat = dealID + personID;
 
             // console.log(cat);
-            haveLater[cat] = activity; 
+            haveLater[activity.deal_id] = activity; 
+            haveLater[activity.deal_id]['cat'] = Number(cat);
         }
     });
+
+    //console.log('this is change:');
+    //console.log(Object.keys(change));
+
+    //console.log('this is haveLater:');
+    //console.log(Object.keys(haveLater));
+    
+    console.log('This is haveLater: ');
+    console.log(haveLater);
+
+    //console.log('this is have just for shits:');
+    //console.log(Object.keys(have));
 
     //console.log('Here are the people who already have a W-2 activity:');
     //console.log(Object.keys(have));
@@ -176,4 +189,26 @@ module.exports = function (API_KEY, deals, activities, app, type, pbl, address, 
                      'due_date' : moment().add(85, 'days').format('YYYY-MM-DD')}});
         });
     });
+
+    var changeQueue = Object.keys(change).filter(function(deal) {
+        return (Object.keys(haveLater).indexOf(deal) !== -1);   
+    });
+
+    var changeArray = changeQueue.map(function(deal) {
+        return Number(deal); 
+    });
+
+    console.log('The Change Array: ');
+    console.log(changeArray);
+
+    console.log('This is a test: ');
+    console.log(haveLater[51].id);
+    
+   changeArray.forEach(function(deal) {
+        console.log(haveLater[deal].id);
+        request.put('https://api.pipedrive.com/v1/activities/' + haveLater[deal].id + '?api_token=' + API_KEY, {
+            form: {'due_date' : moment().add(3, 'days').format('YYYY-MM-DD')}});  
+    });
+ 
+
 } 
